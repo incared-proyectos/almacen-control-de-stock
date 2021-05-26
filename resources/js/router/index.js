@@ -30,6 +30,26 @@ let routes = [
             requiresAuth: true,
         }
     },
+    {
+        path: '/vehiculos',
+        component: require('@/pages/App.vue').default,
+        meta: {
+            requiresAuth: true,
+        },
+        children: [
+            {
+
+              path: '',
+              component: require('@/pages/Vehiculos/Index.vue').default
+
+            },
+            {
+
+              path: 'create',
+              component: require('@/pages/Vehiculos/Create.vue').default
+            },
+        ]
+    },
      
 
 ];

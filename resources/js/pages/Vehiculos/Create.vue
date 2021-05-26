@@ -1,0 +1,248 @@
+<template>
+	<div>
+		<section-content>
+		    <!-- Main row -->
+		    <div class="row">
+		    	<div class="col-12">
+			     	<div class="card">
+			     	   <div class="card-header bg bg-info">
+			     	   		<div class="row">
+			     	   			<div class="col-6">
+			     	   				<b><i class="fas fa-car"></i>  <i class="fas fa-plus-square"></i>  Nuevo Registro</b>
+			     	   			</div>
+			     	   			<div class="col-6 text-right">
+			     	   				<router-link  to="/vehiculos" class="text-white">
+				                        <b><i class="fas fa-arrow-alt-circle-left"></i> Volver al listado..</b>
+				                    </router-link>
+			     	   			</div>
+			     	   		</div>
+			     	   </div>
+		              <div class="card-body">
+		              	  	<errors-form :errors="validationForm"/>
+  							<success-message :message="message_success"/>
+
+					
+		              		<form  @submit.prevent="formsave" ref="formContainer">
+		              			<div class="row">
+		              				<div class="col-md-6 col-lg-3 col-xl-3">
+		              					<label for=""><b>Nombre del Vehiculo:</b></label>
+		              					<input type="text" class="form-control" v-model="form.nombre" placeholder="example: Vehiculo 2">
+		              				</div>
+		              				<div class="col-md-6 col-lg-3 col-xl-3">
+		              					<label for=""><b>Modelo:</b></label>
+		              					<input type="text" class="form-control" v-model="form.modelo" placeholder="example: Chevrolet">
+		              				</div>
+		              				<div class="col-md-6 col-lg-3 col-xl-3 mt-md-4  mt-xl-0">
+		              					<label for=""><b>Marca:</b></label>
+		              					<input type="text" class="form-control" v-model="form.marca" placeholder="example: Blazer">
+		              				</div>
+		              				<div class="col-md-6 col-lg-3 col-xl-3 mt-md-4  mt-xl-0">
+		              					<label for=""><b>Color:</b></label>
+		              					<input type="text" class="form-control" v-model="form.color" placeholder="example: Azul">
+		              				</div>
+		              			</div>
+		              			<hr>
+		              			<div class="row">
+		              				<div class="col-6">
+		              					<select  data-tipe="rutas"  class="form-control" @change="selects_change">
+		              						<option value="">Seleccionar..</option>
+		              						<option v-for="item in rutas" :value="item.id" :key="item.id" >{{ item.nombre }} || {{item.direccion}}</option>
+		              					</select>
+		              					<hr>
+		              					<div class="row">
+		              						<div class="col-12">
+		              							<span v-for="item in form.rutas_json" :key="item.id" class="items_selected_json bg bg-primary">{{item.nombre}} | {{item.direccion}}
+		              								<a href="#"  @click="selects_delete('rutas',item.id)" ><i class="fas fa-trash"></i></a>
+		              							
+
+		              							</span>
+		              						</div>
+		              					</div>
+		              				</div>
+		              				<div class="col-6">
+		              					<select  data-tipe="productos"  class="form-control" @change="selects_change">
+		              						<option value="">Seleccionar..</option>
+		              						<option v-for="item in productos" :value="item.id" :key="item.id" >{{ item.nombre }} </option>
+		              					</select>
+		              					<hr>
+		              					<div class="row">
+		              						<div class="col-12">
+		              							<div v-for="item in form.productos_json" :key="item.id" class="row mt-3">
+		              								
+		              								<div class="col-5">
+														<div class="input-group mb-3">
+														  <div class="input-group-prepend">
+														    <span class="input-group-text" id="basic-addon3"><i class="fas fa-store"></i></span>
+														  </div>
+		              										<input type="text" readonly="" :value="item.nombre" class="form-control">
+														</div>
+		              								</div>
+		              								<div class="col-5">
+		              									<div class="input-group mb-3">
+														  <div class="input-group-prepend">
+														    <span class="input-group-text" id="basic-addon3"><i class="fas fa-cubes"></i></span>
+														  </div>
+		              										<input type="text" placeholder="stock" class="form-control" :id="'stock'+item.id" :data-id="item.id"  @keyup="stock_product">
+														</div>
+		              								</div>
+		              								<div class="col-2">
+		              									<a href="#" class="btn btn-primary" @click.prevent="selects_delete('productos',item.id)" ><i class="fas fa-trash"></i></a>
+		              								</div>
+
+		              							</div>
+		              						
+		              						</div>
+		              					</div>
+		              				</div>
+		              			</div>
+		              			<div class="row mt-5">
+		              				<div class="col-12 text-center">
+		              					<button class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+		              				</div>
+		              			</div>
+		              		</form>
+		              </div>
+		            </div>
+		     	</div>
+		    </div>
+		    <!-- /.row (main row) -->
+		</section-content>
+
+	</div>
+</template>
+<script>
+	import SectionContent from "@/components/SectionContent.vue"
+	import HeaderTitle from "@/components/HeaderTitle.vue"
+	import ErrorsForm from "@/components/ValidationErrors.vue"
+	import successMessage from '@/components/SuccessMessage';
+
+	export default {
+		components: {
+	      SectionContent,HeaderTitle,ErrorsForm,successMessage
+	    },
+	    data: function() {
+	    	return {
+	    		url_table:route('vehiculos.index'),
+	    		productos:null,
+	    		rutas:null,
+	    		validationForm:[],
+	    		message_success:'',
+	    		form:{
+	    			nombre:'',
+	    			modelo:'',
+	    			marca:'',
+	    			color:'',
+	    			rutas_json:[],
+	    			productos_json:[],
+	    		},
+	    		fullPage: false
+	    	}
+	    },
+  		created: function () {
+  			this.init();
+	    },
+		mounted: function () {
+
+	    },
+	    methods:{
+	    	clearform(){
+        		let me = this;
+        		Object.keys(this.form).forEach(function(key) {
+        		  if (Array.isArray(me.form[key]) ) {
+        		  	me.form[key] = []
+        		  }else{
+				  	me.form[key] = '';
+				  }
+				})
+        	},
+	    	init(){
+	    		let me = this;
+	    		axios.get(route('vehiculos.create')).then((response) => {
+	    			me.productos = response.data.productos
+	    			me.rutas = response.data.rutas
+	    		}).catch((error) => {
+			       	alert(error.response.data.message)
+	    		})
+	    	},
+	    	loader(){
+	    		return this.$loading.show({
+                  // Optional parameters
+                  container: this.fullPage ? null : this.$refs.formContainer,
+                  canCancel: false,
+                  onCancel: this.onCancel,
+                });
+	    	},
+	    	formsave(){
+	    		let loader = this.loader();
+	    		let me = this;
+	    		this.message_success = ''
+
+	    		axios.post(route('vehiculos.save'),this.form).then((response) => {
+	    			me.validationForm = ''
+	    			me.clearform()
+	    		    me.message_success = response.data.success
+	    		    loader.hide()
+	    		}).catch((error) => {
+	    			loader.hide()
+	    			me.validationForm = ''
+	    		  	if (error.response.status == 422){
+			    		me.validationForm = error.response.data;
+			      	}else if (error.response.status == 500) {
+			        	alert(error.response.data.message)
+			      	}
+	    		})
+	    	},	
+	    	stock_product(event){	
+	    		let id_product = Number($(event.currentTarget).attr('data-id'));
+	    		let val_product = Number($(`#stock${id_product}`).val());
+		    	let item = this.form.productos_json.find(item => item.id === id_product);
+		    	if (val_product > item.stock) {
+		    		alert('Tu stock es mayor al existente');
+		    		return;
+		    	}
+		    	if (item.stock === 0) {
+		    		alert('No hay stock existente');
+		    		return;
+		    	}
+				Object.keys(item).map(function(key, index) {
+				  	item.stock_vehicle = val_product  
+				});
+
+
+	    	},
+	    	selects_change(event){
+	    		let select = $(event.currentTarget);
+	    		if (select.val() !== '') {
+	    			let selected_id = Number(select.val());
+
+		    		if (select.attr('data-tipe') == 'rutas') {
+		    			if (this.form.rutas_json.find(item => item.id === selected_id) !== undefined) {
+		    				return;
+		    			}
+		    			let item = this.rutas.find(item => item.id === selected_id)
+
+		    			this.form.rutas_json.push(item)
+		    		}
+		    		if (select.attr('data-tipe') == 'productos') {
+		    			if (this.form.productos_json.find(item => item.id === selected_id) !== undefined) {
+		    				return;
+		    			}
+		    			let item = this.productos.find(item => item.id === selected_id)
+		    			this.form.productos_json.push(item)
+		    		}
+	    		}
+	    	},
+	    	selects_delete(type,payload){
+	    		if (type == 'productos') {
+	    		 this.form.productos_json = this.form.productos_json.filter(item => item.id !== payload) // con filter hacemos de este modo buscamos el id donde sea diferente al payload o al id que le pasamos y asi borra el elemento
+	    		}
+	    		if (type == 'rutas') {
+	    			this.form.rutas_json = this.form.rutas_json.filter(item => item.id !== payload) // con filter hacemos de este modo buscamos el id donde sea diferente al payload o al id que le pasamos y asi borra el elemento
+	    		}
+	    	}
+
+	    },
+
+
+	}
+</script>

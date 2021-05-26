@@ -38,4 +38,14 @@ Route::group(['prefix'=>'rutas','as'=>'rutas.'], function(){
 
 });
 
+//MODULE VEHICULOS
+Route::group(['prefix'=>'vehiculos','as'=>'vehiculos.'], function(){
+	Route::get('/', [App\Http\Controllers\VehiculosController::class, 'index'])->name('index');
+	Route::get('/create', [App\Http\Controllers\VehiculosController::class, 'create'])->name('create');
+	Route::post('/save', [App\Http\Controllers\VehiculosController::class, 'store'])->name('save');
+	Route::post('/delete', [App\Http\Controllers\VehiculosController::class, 'destroy'])->name('delete');
+
+});
+
+
 

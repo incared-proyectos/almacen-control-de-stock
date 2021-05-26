@@ -1,0 +1,8 @@
+/*ITEMS seleccionados en json*/
+.items_selected_json{
+	padding: 10px;
+    border-radius: 9px;
+    color: white;
+    margin: 5px;
+    display: inline-block;
+}

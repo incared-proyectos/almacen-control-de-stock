@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\Datatables\Datatables;
 use App\Models\Producto;
+use App\Models\Stock_vehiculo;
 class ProductoController extends Controller
 {
     /**
@@ -18,7 +19,27 @@ class ProductoController extends Controller
         $table = Datatables::of(Producto::all());
         $table->addColumn('action', function($row){
             return 'delete';
-        })->rawColumns(['action']);
+        })->addColumn('stock_vehicle', function($row){
+            return 'stock';
+        })->rawColumns(['action','stock_vehicle']);
+        return $table->make(true);    
+    }
+
+
+    public function stocks_productos($id)
+    {
+        $table = Datatables::of(Producto::all());
+        $table->addColumn('action', function($row){
+            return 'delete';
+        })->addColumn('stock_actual', function($row) use ($id){
+           $vehiculo = Stock_vehiculo::where('vehiculos_id',$id)->where('productos_id',$row['id'])->first();
+           if (empty($vehiculo)) {
+               return 0;
+           }
+           return $vehiculo->stock_product;
+        })->addColumn('stock_vehicle', function($row){
+            return 'stock';
+        })->rawColumns(['action','stock_vehicle']);
         return $table->make(true);    
     }
 

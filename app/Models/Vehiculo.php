@@ -14,6 +14,10 @@ class Vehiculo extends Model
         'marca',
         'color',
         'rutas_json',
-        'productos_json',
     ];
+
+    public function productos()
+	{
+	    return $this->belongsToMany('App\Models\Producto', 'stock_vehiculos', 'vehiculos_id', 'productos_id')->withPivot('stock_product');
+	}
 }

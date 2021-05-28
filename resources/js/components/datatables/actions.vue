@@ -1,7 +1,6 @@
 <template>
     <div>
         <!-- Modal -->
-
         <button  @click="edit" class="btn btn-primary btn-sm"  title="Editar"  >
             <slot><i class="fas fa-edit"></i></slot>
         </button>
@@ -13,7 +12,7 @@
 
 <script>
     export default{
-        props: ['id','action','url_action'],
+        props: ['id','action','url_action','url_edit'],
         methods: {
         formLoading(contianer){
             return this.$loading.show({
@@ -24,7 +23,10 @@
             });
           },
           edit(event) {
-         
+            //this.$parent.$router.push(this.url_edit)
+
+            this.$emit("edit_emit");
+
           },
 
           delete_row(event) {

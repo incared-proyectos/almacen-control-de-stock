@@ -29,6 +29,7 @@ Route::group(['prefix'=>'almacen','as'=>'almacen.'], function(){
 //MODULE PRODUCTOS
 Route::group(['prefix'=>'productos','as'=>'productos.'], function(){
 	Route::get('/', [App\Http\Controllers\ProductoController::class, 'index'])->name('index');
+	Route::get('/stocks_productos/{id}', [App\Http\Controllers\ProductoController::class, 'stocks_productos'])->name('stocks_productos');
 
 });
 
@@ -42,8 +43,10 @@ Route::group(['prefix'=>'rutas','as'=>'rutas.'], function(){
 Route::group(['prefix'=>'vehiculos','as'=>'vehiculos.'], function(){
 	Route::get('/', [App\Http\Controllers\VehiculosController::class, 'index'])->name('index');
 	Route::get('/create', [App\Http\Controllers\VehiculosController::class, 'create'])->name('create');
+	Route::get('/edit/{id}', [App\Http\Controllers\VehiculosController::class, 'edit'])->name('edit');
 	Route::post('/save', [App\Http\Controllers\VehiculosController::class, 'store'])->name('save');
 	Route::post('/delete', [App\Http\Controllers\VehiculosController::class, 'destroy'])->name('delete');
+	Route::post('/update', [App\Http\Controllers\VehiculosController::class, 'update'])->name('update');
 
 });
 

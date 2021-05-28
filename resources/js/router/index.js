@@ -48,6 +48,11 @@ let routes = [
               path: 'create',
               component: require('@/pages/Vehiculos/Create.vue').default
             },
+            {
+
+              path: 'edit/:id',
+              component: require('@/pages/Vehiculos/Edit.vue').default
+            },
         ]
     },
      

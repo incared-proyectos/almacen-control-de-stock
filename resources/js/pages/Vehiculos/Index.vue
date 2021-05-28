@@ -64,7 +64,6 @@
 			          	searchable: false,
 			          	createdCell:this.createdCell,
 			        }
-
 			    ],
 	    	}
 	    },
@@ -73,23 +72,19 @@
 	    },
 	    methods:{
 		   createdCell(cell, cellData, rowData) {
-	          let me = this;
-	     
+	          	let me = this;
+	 
 	          	$(cell).empty();
 	            let actions = Vue.extend(require('@/components/datatables/actions.vue').default);
 	            let instance = new actions({
-	                propsData: rowData
+	                propsData: {
+	                	id:rowData.id,
+	                },
 	            });
 	            instance.$mount();
-	            /*instance.$on('success', function(event) {
-	              me.$notify({
-	                group: 'global',
-	                type:'success',
-	                title: 'Excelente!',
-	                duration: 10000,
-	                text: event
-	              });
-	            })*/
+	            instance.$on('edit_emit', function(event) {
+	             	me.$router.push(`vehiculos/edit/${rowData.id}`);
+	            })
 	            $(cell).empty().append(instance.$el);
 	          
 	      }

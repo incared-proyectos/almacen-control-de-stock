@@ -59,41 +59,7 @@
 		              						</div>
 		              					</div>
 		              				</div>
-		              				<div class="col-6">
-		              					<select  data-tipe="productos"  class="form-control" @change="selects_change">
-		              						<option value="">Seleccionar..</option>
-		              						<option v-for="item in productos" :value="item.id" :key="item.id" >{{ item.nombre }} </option>
-		              					</select>
-		              					<hr>
-		              					<div class="row">
-		              						<div class="col-12">
-		              							<div v-for="item in form.productos_json" :key="item.id" class="row mt-3">
-		              								
-		              								<div class="col-5">
-														<div class="input-group mb-3">
-														  <div class="input-group-prepend">
-														    <span class="input-group-text" id="basic-addon3"><i class="fas fa-store"></i></span>
-														  </div>
-		              										<input type="text" readonly="" :value="item.nombre" class="form-control">
-														</div>
-		              								</div>
-		              								<div class="col-5">
-		              									<div class="input-group mb-3">
-														  <div class="input-group-prepend">
-														    <span class="input-group-text" id="basic-addon3"><i class="fas fa-cubes"></i></span>
-														  </div>
-		              										<input type="text" placeholder="stock" class="form-control" :id="'stock'+item.id" :data-id="item.id"  @keyup="stock_product">
-														</div>
-		              								</div>
-		              								<div class="col-2">
-		              									<a href="#" class="btn btn-primary" @click.prevent="selects_delete('productos',item.id)" ><i class="fas fa-trash"></i></a>
-		              								</div>
-
-		              							</div>
-		              						
-		              						</div>
-		              					</div>
-		              				</div>
+		              				
 		              			</div>
 		              			<div class="row mt-5">
 		              				<div class="col-12 text-center">
@@ -123,7 +89,6 @@
 	    data: function() {
 	    	return {
 	    		url_table:route('vehiculos.index'),
-	    		productos:null,
 	    		rutas:null,
 	    		validationForm:[],
 	    		message_success:'',
@@ -133,7 +98,6 @@
 	    			marca:'',
 	    			color:'',
 	    			rutas_json:[],
-	    			productos_json:[],
 	    		},
 	    		fullPage: false
 	    	}
@@ -158,7 +122,6 @@
 	    	init(){
 	    		let me = this;
 	    		axios.get(route('vehiculos.create')).then((response) => {
-	    			me.productos = response.data.productos
 	    			me.rutas = response.data.rutas
 	    		}).catch((error) => {
 			       	alert(error.response.data.message)
@@ -192,24 +155,6 @@
 			      	}
 	    		})
 	    	},	
-	    	stock_product(event){	
-	    		let id_product = Number($(event.currentTarget).attr('data-id'));
-	    		let val_product = Number($(`#stock${id_product}`).val());
-		    	let item = this.form.productos_json.find(item => item.id === id_product);
-		    	if (val_product > item.stock) {
-		    		alert('Tu stock es mayor al existente');
-		    		return;
-		    	}
-		    	if (item.stock === 0) {
-		    		alert('No hay stock existente');
-		    		return;
-		    	}
-				Object.keys(item).map(function(key, index) {
-				  	item.stock_vehicle = val_product  
-				});
-
-
-	    	},
 	    	selects_change(event){
 	    		let select = $(event.currentTarget);
 	    		if (select.val() !== '') {
@@ -223,19 +168,10 @@
 
 		    			this.form.rutas_json.push(item)
 		    		}
-		    		if (select.attr('data-tipe') == 'productos') {
-		    			if (this.form.productos_json.find(item => item.id === selected_id) !== undefined) {
-		    				return;
-		    			}
-		    			let item = this.productos.find(item => item.id === selected_id)
-		    			this.form.productos_json.push(item)
-		    		}
 	    		}
 	    	},
 	    	selects_delete(type,payload){
-	    		if (type == 'productos') {
-	    		 this.form.productos_json = this.form.productos_json.filter(item => item.id !== payload) // con filter hacemos de este modo buscamos el id donde sea diferente al payload o al id que le pasamos y asi borra el elemento
-	    		}
+	    		
 	    		if (type == 'rutas') {
 	    			this.form.rutas_json = this.form.rutas_json.filter(item => item.id !== payload) // con filter hacemos de este modo buscamos el id donde sea diferente al payload o al id que le pasamos y asi borra el elemento
 	    		}

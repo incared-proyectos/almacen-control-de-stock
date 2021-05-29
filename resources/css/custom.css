@@ -6,3 +6,26 @@
     margin: 5px;
     display: inline-block;
 }
+/*SEARCHS IN KEY UP VUEJS */
+.search_dni{
+	position: absolute;
+    width: 96%;
+    background: #2e70d4d1;
+    color: white;
+    z-index: 9999;
+
+}
+.search_ul{
+	padding: 0px;
+    margin: 0px;
+
+}
+.search_ul li {
+	list-style: none;
+	padding: 10px;
+	cursor: pointer;
+	border-bottom: 1px solid;
+}
+.search_ul li:hover{
+	background: #00000045;
+}

@@ -21,6 +21,9 @@ class RutaController extends Controller
         })->rawColumns(['action']);
         return $table->make(true);        
     }
+    public function all(){
+        return Ruta::all();
+    }
 
     /**
      * Show the form for creating a new resource.

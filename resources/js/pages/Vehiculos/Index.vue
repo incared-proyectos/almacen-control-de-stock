@@ -79,6 +79,7 @@
 	            let instance = new actions({
 	                propsData: {
 	                	id:rowData.id,
+	                	url_delete:route('vehiculos.delete')
 	                },
 	            });
 	            instance.$mount();

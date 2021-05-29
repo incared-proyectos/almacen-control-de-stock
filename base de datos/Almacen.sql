@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-05-2021 a las 20:53:38
+-- Tiempo de generación: 29-05-2021 a las 02:12:11
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 7.4.13
 
@@ -41,6 +41,35 @@ CREATE TABLE `almacens` (
 INSERT INTO `almacens` (`id`, `nombre`, `created_at`, `updated_at`) VALUES
 (1, 'Almacen 1', '2021-05-24 12:57:33', '2021-05-24 12:57:33'),
 (2, 'Almacen 2', '2021-05-24 12:57:33', '2021-05-24 12:57:33');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `clientes`
+--
+
+CREATE TABLE `clientes` (
+  `id` int(11) NOT NULL,
+  `nombres` varchar(150) NOT NULL,
+  `apellidos` varchar(150) NOT NULL,
+  `identificacion` varchar(150) NOT NULL,
+  `telefono` varchar(150) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `direccion` varchar(150) NOT NULL,
+  `ruta_id` int(11) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `clientes`
+--
+
+INSERT INTO `clientes` (`id`, `nombres`, `apellidos`, `identificacion`, `telefono`, `email`, `direccion`, `ruta_id`, `created_at`, `updated_at`) VALUES
+(1, 'Pedro J', 'Avila', '25129301', '0545645646', 'pedrojam14@gmail.com', 'asadsd', 1, '2021-05-28 10:35:05', '2021-05-28 10:35:05'),
+(2, 'Arnoldo ', 'Perez', '4546545646', '56564656', 'pepdxpd', '', 1, '2021-05-28 10:35:42', '2021-05-28 10:35:42'),
+(3, 'pruebas', 'pruebas', '546546546', '464564654', 'pruebas@gmail.com', 'asasdas', 2, '2021-05-28 10:47:22', '2021-05-28 10:47:22'),
+(5, 'pedro45', 'pedro4', '251293013', '04127709844', 'pedrojam134@gmail.com', 'ALTAGRACIA DE ORITUCO URB EL DIAMANTE CASA NUMERO 58, Principal', 2, '2021-05-28 23:46:00', '2021-05-28 23:57:26');
 
 -- --------------------------------------------------------
 
@@ -133,8 +162,8 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id`, `nombre`, `stock`, `precio`, `precio_rebaja`, `marca`, `descripcion`, `created_at`, `updated_at`) VALUES
-(1, 'paquete de galletas', 10, 100, NULL, 'Royale', 'asdasd', '2021-05-24 14:43:35', '2021-05-24 14:43:35'),
-(2, 'Galletas de  chocolate', 100, 100, NULL, 'Royale club', 'asdasdasd', '2021-05-24 14:43:35', '2021-05-24 14:43:35');
+(1, 'paquete de galletas', 80, 100, NULL, 'Royale', 'asdasd', '2021-05-24 14:43:35', '2021-05-28 02:00:21'),
+(2, 'Galletas de  chocolate', 70, 100, NULL, 'Royale club', 'asdasdasd', '2021-05-24 14:43:35', '2021-05-28 01:55:18');
 
 -- --------------------------------------------------------
 
@@ -161,6 +190,59 @@ INSERT INTO `rutas` (`id`, `nombre`, `direccion`, `created_at`, `updated_at`) VA
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `stock_historias`
+--
+
+CREATE TABLE `stock_historias` (
+  `id` int(11) NOT NULL,
+  `vehiculo` varchar(100) NOT NULL,
+  `vehiculo_id` int(11) NOT NULL,
+  `producto` varchar(255) NOT NULL,
+  `producto_id` int(11) NOT NULL,
+  `stock_actual` bigint(20) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `stock_historias`
+--
+
+INSERT INTO `stock_historias` (`id`, `vehiculo`, `vehiculo_id`, `producto`, `producto_id`, `stock_actual`, `created_at`, `updated_at`) VALUES
+(32, 'Vehiculo9', 4, 'paquete de galletas', 1, 135, '2021-05-28 01:55:18', '2021-05-28 01:55:18'),
+(33, 'Vehiculo9', 4, 'Galletas de  chocolate', 2, 98, '2021-05-28 01:55:18', '2021-05-28 01:55:18'),
+(34, 'vehiculo4', 6, 'paquete de galletas', 1, 3, '2021-05-28 02:00:21', '2021-05-28 02:00:21');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `stock_vehiculos`
+--
+
+CREATE TABLE `stock_vehiculos` (
+  `id` int(11) NOT NULL,
+  `vehiculos_id` int(11) NOT NULL,
+  `productos_id` int(11) NOT NULL,
+  `stock_product` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `stock_vehiculos`
+--
+
+INSERT INTO `stock_vehiculos` (`id`, `vehiculos_id`, `productos_id`, `stock_product`) VALUES
+(1, 2, 1, '21'),
+(2, 2, 2, '10'),
+(3, 4, 1, '135'),
+(4, 4, 2, '98'),
+(5, 3, 1, '17'),
+(6, 3, 2, '13'),
+(7, 6, 1, '3'),
+(8, 6, 2, '3');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `users`
 --
 
@@ -183,6 +265,52 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `re
 (1, 'pedro', 'pedrojam14@gmail.com', NULL, '$2y$10$36yThdWohsf7l2y79Kr.neZ0n.uIJHBjzlmDaeVfiIgIY/I.1o/p6', NULL, '2021-05-23 03:36:27', '2021-05-23 03:36:27'),
 (2, 'nuevo', 'nuevo@gmail.com', NULL, '$2y$10$.g9RY680r75uukzg68rNseDfthdnzkExvFmOaMkpyCX7.2wiYcEze', NULL, '2021-05-23 07:09:27', '2021-05-23 07:09:27');
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `vehiculos`
+--
+
+CREATE TABLE `vehiculos` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `modelo` varchar(255) NOT NULL,
+  `marca` varchar(255) NOT NULL,
+  `color` varchar(255) NOT NULL,
+  `rutas_json` text DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `vehiculos`
+--
+
+INSERT INTO `vehiculos` (`id`, `nombre`, `modelo`, `marca`, `color`, `rutas_json`, `created_at`, `updated_at`) VALUES
+(2, 'Vehiculo2', 'chevrolet', 'blazer', 'verde', '[{\"id\":1,\"nombre\":\"Ruta 1\",\"direccion\":\"Direccion central al cruce, calle 4, casa numero 80\",\"created_at\":\"2021-05-24T14:44:35.000000Z\",\"updated_at\":\"2021-05-24T14:44:35.000000Z\"},{\"id\":2,\"nombre\":\"Ruta 1\",\"direccion\":\"Direccion central, calle 7, casa numero 100\",\"created_at\":\"2021-05-24T14:44:35.000000Z\",\"updated_at\":\"2021-05-24T14:44:35.000000Z\"}]', '2021-05-25 18:23:44', '2021-05-28 02:11:09'),
+(3, 'vehiculo 2', 'chevrolet3', 'blazer', 'azul', '[{\"id\":1,\"nombre\":\"Ruta 1\",\"direccion\":\"Direccion central al cruce, calle 4, casa numero 80\",\"created_at\":\"2021-05-24T14:44:35.000000Z\",\"updated_at\":\"2021-05-24T14:44:35.000000Z\"}]', '2021-05-25 18:25:43', '2021-05-27 23:05:55'),
+(4, 'Vehiculo9', 'chevrolet', 'adads', 'asdasd', '[{\"id\":1,\"nombre\":\"Ruta 1\",\"direccion\":\"Direccion central al cruce, calle 4, casa numero 80\",\"created_at\":\"2021-05-24T14:44:35.000000Z\",\"updated_at\":\"2021-05-24T14:44:35.000000Z\"}]', '2021-05-26 16:18:33', '2021-05-28 01:55:18');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `venta_clientes`
+--
+
+CREATE TABLE `venta_clientes` (
+  `id` int(11) NOT NULL,
+  `codigo` varchar(100) NOT NULL,
+  `cifnif` varchar(150) NOT NULL,
+  `direccion` varchar(250) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `telefono` varchar(100) NOT NULL,
+  `ciudad` varchar(150) NOT NULL,
+  `ruta_id` int(11) NOT NULL,
+  `vehiculo_id` int(11) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 --
 -- Índices para tablas volcadas
 --
@@ -191,6 +319,12 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `re
 -- Indices de la tabla `almacens`
 --
 ALTER TABLE `almacens`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `clientes`
+--
+ALTER TABLE `clientes`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -233,11 +367,35 @@ ALTER TABLE `rutas`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `stock_historias`
+--
+ALTER TABLE `stock_historias`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `stock_vehiculos`
+--
+ALTER TABLE `stock_vehiculos`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `users_email_unique` (`email`);
+
+--
+-- Indices de la tabla `vehiculos`
+--
+ALTER TABLE `vehiculos`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `venta_clientes`
+--
+ALTER TABLE `venta_clientes`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -248,6 +406,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `almacens`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `clientes`
+--
+ALTER TABLE `clientes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `failed_jobs`
@@ -280,10 +444,34 @@ ALTER TABLE `rutas`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT de la tabla `stock_historias`
+--
+ALTER TABLE `stock_historias`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+
+--
+-- AUTO_INCREMENT de la tabla `stock_vehiculos`
+--
+ALTER TABLE `stock_vehiculos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `vehiculos`
+--
+ALTER TABLE `vehiculos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `venta_clientes`
+--
+ALTER TABLE `venta_clientes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

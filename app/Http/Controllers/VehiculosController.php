@@ -27,7 +27,22 @@ class VehiculosController extends Controller
         })->rawColumns(['action']);
         return $table->make(true);     
     }
-
+    public function getby($id){
+        $all = Vehiculo::with('productos')->get();
+        $all_vehiculos = [];
+        foreach ($all as $ve) {
+            $jsonvehiculo = json_decode($ve['rutas_json']);
+            foreach ($jsonvehiculo as $json) {
+                if ($json->id ==  $id) {
+                    $all_vehiculos[] = $ve;
+                }
+            }   
+        }
+        return $all_vehiculos;
+    }
+    public function all(){
+        return Vehiculo::all();
+    }
     /*
     * VALIDATIONS FORMS
     */

@@ -87,8 +87,8 @@
 	import HeaderTitle from "@/components/HeaderTitle.vue"
 	import ErrorsForm from "@/components/ValidationErrors.vue"
 	import successMessage from '@/components/SuccessMessage';
-	import AllTable from '@/Pages/Productos/AllTable';
-	import  {mapGetters,mapActions} from 'vuex'
+	import AllTable from '@/Pages/Vehiculos/AddVehiculoTable';
+	import {mapGetters,mapActions} from 'vuex'
 
 	export default {
 		components: {

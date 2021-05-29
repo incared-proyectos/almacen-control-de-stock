@@ -77,6 +77,22 @@
             </p>
           </router-link>
         </li>
+         <li class="nav-item">
+          <router-link  to="/clientes"  class="nav-link">
+            <i class="nav-icon fas fa-user-tie"></i>
+            <p>
+              Clientes
+            </p>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link  to="/ventas_clientes"  class="nav-link">
+            <i class="nav-icon fas fa-shopping-cart"></i>
+            <p>
+              Ventas Clientes
+            </p>
+          </router-link>
+        </li>
       </ul>
     </nav>
     <!-- /.sidebar-menu -->

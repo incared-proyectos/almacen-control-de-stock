@@ -55,6 +55,57 @@ let routes = [
             },
         ]
     },
+    {
+        path: '/clientes',
+        component: require('@/pages/App.vue').default,
+        meta: {
+            requiresAuth: true,
+        }
+        ,
+        children: [
+            {
+
+              path: '',
+              component: require('@/pages/Clientes/Index.vue').default
+
+            },
+            {
+
+              path: 'create',
+              component: require('@/pages/Clientes/Create.vue').default
+            },
+            {
+
+              path: 'edit/:id',
+              component: require('@/pages/Clientes/Edit.vue').default
+            }
+
+            
+        ]
+    },
+    {
+        path: '/ventas_clientes',
+        component: require('@/pages/App.vue').default,
+        meta: {
+            requiresAuth: true,
+        },
+        children: [
+            {
+
+              path: '',
+              component: require('@/pages/Ventas_clientes/Index.vue').default
+
+            },
+            {
+
+              path: 'create',
+              component: require('@/pages/Ventas_clientes/Create.vue').default
+            }
+            
+
+            
+        ]
+    },
      
 
 ];

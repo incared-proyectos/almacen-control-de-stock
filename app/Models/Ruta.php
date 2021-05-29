@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Ruta extends Model
 {
     use HasFactory;
+
 }

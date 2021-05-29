@@ -12,7 +12,7 @@
 
 <script>
     export default{
-        props: ['id','action','url_action','url_edit'],
+        props: ['id','action','url_action','url_edit','url_delete'],
         methods: {
         formLoading(contianer){
             return this.$loading.show({
@@ -31,7 +31,7 @@
 
           delete_row(event) {
             let me = this;
-            axios.post(route('vehiculos.delete'), {
+            axios.post(this.url_delete, {
               id_data: this.id,
             }).then((response) => {
               $(`#codenv${me.id}`).remove();

@@ -1,13 +1,13 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import pacientes from './modules/pacientes';
 import stock_productos from './modules/stock_productos';
+import stock_ventas_clientes from './modules/stock_ventas_clientes';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
-        pacientes,
-        stock_productos
+        stock_productos,
+        stock_ventas_clientes
     }
 });

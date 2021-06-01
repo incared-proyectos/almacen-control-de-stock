@@ -22,7 +22,7 @@
 
 		},
 		methods:{
-			...mapActions(['setStockVehiculo']),
+			//...mapActions(['setStockVehiculo']),
 			stocksCalculated(event){
 				let valueThis = Number($(event.currentTarget).val());
 				let idTable = $(event.currentTarget).attr('data-id');

@@ -101,6 +101,12 @@ let routes = [
               path: 'create',
               component: require('@/pages/Ventas_clientes/Create.vue').default
             }
+            ,
+            {
+
+              path: 'edit/:id',
+              component: require('@/pages/Ventas_clientes/Edit.vue').default
+            }
             
 
             

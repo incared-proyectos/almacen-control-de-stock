@@ -1,4 +1,5 @@
 require('./bootstrap');
+window.swal = require('sweetalert2') // added here
 window.Vue = require('vue').default;
 import 'datatables.net-bs4/js/dataTables.bootstrap4.min.js';
 import VueRouter from 'vue-router'

@@ -20,24 +20,16 @@
 		mounted(){
 		},
 		methods:{
-        	...mapActions(['setStocks'])
+
 		},
 		computed:{
-			...mapGetters(['numstock']), //PRUEBAS DE VUEX EN COMPONENTES EXTENDIDOS
-			stocks_id(){
-				return this.numstock.find(item => item.id === this.id)
-			},
+		
 			stocks(){
 				return this.stock_actual;
 			}
 		},
 		created(){
-     		let stocks = {
-     			id:this.id,
-     			stock:this.stock_actual,
-     			stock_actual:this.stock_actual
-     		} 
-        	this.setStocks(stocks);
+
 		},
 		/*beforeRouteUpdate(to, from, next) {
 		    this.param = to.params.param;

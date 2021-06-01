@@ -1,12 +1,10 @@
 <template>
 	<div>
-		<input type="text" class="form-control"    :id="`stockActual${id}`"  :data-id="id"  :value="stocks" readonly="">
+		<input type="text" class="form-control"    :id="`stockActual${id}`"  :data-id="id"  :ref="`stockActual${id}`" :value="stocks" readonly="">
 		<input type="hidden" class="form-control"    :id="`stockActualHidden${id}`"  :value="stocks">
 	</div>
 </template>
 <script>
-	import  {mapGetters,mapActions} from 'vuex'
-
 	export default{
 		props: ['id','stock','stock_actual'],
 
@@ -18,26 +16,19 @@
 		},
 	
 		mounted(){
+
 		},
 		methods:{
-        	...mapActions(['setStocks'])
+
 		},
 		computed:{
-			...mapGetters(['numstock']), //PRUEBAS DE VUEX EN COMPONENTES EXTENDIDOS
-			stocks_id(){
-				return this.numstock.find(item => item.id === this.id)
-			},
 			stocks(){
-				return this.stock_actual;
+				let item_input  =  this.$store.getters.itemsModify.find(item => item.id === this.id) 
+
+				// TUVE QUE HACER UNA VALIDACION SI VENIA UNDEFINED POR QUE DABA ERROR CUANDO RENDERIZABA Y SE ESCRIBIA EN EL DOM SALIA VACIA PERO CUANDO EL COMPUTED ACTUALIZA TRAE SU VALOR CORRESPONDIENTE.............................
+				return item_input !== undefined ? item_input.stock_actual : 0;
+				//------------------------------------------------------------------------------
 			}
-		},
-		created(){
-     		let stocks = {
-     			id:this.id,
-     			stock:this.stock_actual,
-     			stock_actual:this.stock_actual
-     		} 
-        	this.setStocks(stocks);
 		},
 		/*beforeRouteUpdate(to, from, next) {
 		    this.param = to.params.param;

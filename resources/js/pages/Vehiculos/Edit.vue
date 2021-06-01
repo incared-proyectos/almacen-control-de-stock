@@ -123,7 +123,6 @@
 	    	...mapGetters(['allTodos'])
 	    },
 		mounted: function () {
-						    console.log('ff')
 
 	    },
 	    methods:{

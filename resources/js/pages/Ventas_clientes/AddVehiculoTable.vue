@@ -1,23 +1,40 @@
 <template>
 	<div>
-
-		    <!-- Main row -->
         <div class="table-responsive">
             <data-table :columns="columns" class="table"  :urltable="url_table"></data-table>
+            <div class="container-fluid">
+	            <div class="row justify-content-end">
+	            	<div class="col-4 p-0">
+			            <table class="table table-bordered">
+			            	<tr>
+			            		
+			            		<td >Total:</td>
+			            		<td>{{total}}</td>
+			            	</tr>
+			            </table>
+		            </div>
+	            </div>
+            </div>
 		</div>
 	</div>
 </template>
 <script>
 
-	import DataTable from '@/components/datatables/DataTable.vue';
+	import DataTable from '@/components/datatables/DataTableProductos.vue';
+	import  {mapGetters,mapActions} from 'vuex'
+
 	export default {
-		props:['stockinputs','idselected'],
+		props:['stockinputs','casetable','route'],
 		components: {
 			DataTable
 	    },
+	    created(){
+
+	    	this.init();
+	    },
 	    data: function() {
 	    	return {
-	    		url_table:route('ventas_clientes.stocks_productos',{id:this.idselected}),
+	    		url_table:this.route,
 	    		columns:[
 			        {
 			        	data:'id',
@@ -35,28 +52,41 @@
 			          	createdCell:this.createdCellStockActual,
 			        },
 			        {
-			        	data:'stock_vehicle',
+			        	data:'stock_venta',
 			        	orderable: false,
 			          	searchable: false,
 			          	createdCell:this.createdCellStock,
 			        },
 			        {
 			        	data:'precio',
+			        	orderable: false,
+			          	searchable: false,
+			          	createdCell:this.createdCellPrice,
 			        },
-			        {
-			        	data:'created_at',
-			        },
+			 
 
 			    ],
 	    	}
 	    },
-	    mounted(){	
+	    computed:{
+	    	total(){
+	    		return this.$store.getters.precioTotal
+	    	}
 	    },
 	    methods:{
+	    	...mapActions(['setStocksItem']),
+	    	init(){
+	    		this.$store.commit("clearArray");
+
+	    	},
 	    	createdCellStock(cell,cellData,rowData){
 	    		let me = this;
 	          	$(cell).empty();
-	            let actions = Vue.extend(require('@/pages/Vehiculos/Inputs_datatables/InputStock.vue').default);
+	          	
+	          	//AGREGAMOS LOS ITEMS QUE VENGA CADA CELDA TRAE EN EL ROW DATA  TODA LA DATA DE CADA ITEM DE ESTE MODO PODREMOS MODIFCARLA CON EL STORE
+	     		this.setStocksItem(rowData);
+
+	            let actions = Vue.extend(require('@/pages/Ventas_clientes/Inputs_datatables/InputStock.vue').default);
 	            let store = this.$store;
 	            rowData.cellsedit = this.stockinputs
 	            let instance = new actions({
@@ -69,7 +99,7 @@
 	    	createdCellStockActual(cell,cellData,rowData){
 	    		let me = this;
 	          	$(cell).empty();
-	            let actions = Vue.extend(require('@/pages/Vehiculos/Inputs_datatables/InputStockActual.vue').default);
+	            let actions = Vue.extend(require('@/pages/Ventas_clientes/Inputs_datatables/InputStockActual.vue').default);
 	            let store = this.$store;
 	            let instance = new actions({
 	            	store,
@@ -78,26 +108,17 @@
 	            instance.$mount();
 	            $(cell).empty().append(instance.$el);  
 	    	},
-	    	createdCellAction(cell, cellData, rowData) {
-	         	let me = this;
-	     
+	    	createdCellPrice(cell,cellData,rowData){
 	          	$(cell).empty();
-	            let actions = Vue.extend(require('@/components/datatables/actions.vue').default);
+	            let actions = Vue.extend(require('@/pages/Ventas_clientes/Inputs_datatables/InputPrecio.vue').default);
+	            let store = this.$store;
 	            let instance = new actions({
+	            	store,
 	                propsData: rowData
 	            });
 	            instance.$mount();
-	            /*instance.$on('success', function(event) {
-	              me.$notify({
-	                group: 'global',
-	                type:'success',
-	                title: 'Excelente!',
-	                duration: 10000,
-	                text: event
-	              });
-	            })*/
 	            $(cell).empty().append(instance.$el);  
-	      	}
+	    	}
 	    }
 
 	}

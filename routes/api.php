@@ -72,6 +72,12 @@ Route::group(['prefix'=>'clientes','as'=>'clientes.'], function(){
 Route::group(['prefix'=>'ventas_clientes','as'=>'ventas_clientes.'], function(){
 	Route::get('/', [App\Http\Controllers\Venta_ClientesController::class, 'index'])->name('index');
 	Route::get('/stocks_productos/{id}', [App\Http\Controllers\Venta_ClientesController::class, 'stocks_productos'])->name('stocks_productos');
+	Route::get('/ventas_lineas/{id}', [App\Http\Controllers\Venta_ClientesController::class, 'ventas_lineas'])->name('ventas_lineas');
+	Route::get('/create', [App\Http\Controllers\Venta_ClientesController::class, 'create'])->name('create');
+	Route::get('/edit/{id}', [App\Http\Controllers\Venta_ClientesController::class, 'edit'])->name('edit');
+	Route::post('/save', [App\Http\Controllers\Venta_ClientesController::class, 'store'])->name('save');
+	Route::post('/update', [App\Http\Controllers\Venta_ClientesController::class, 'update'])->name('update');
+	Route::post('/delete', [App\Http\Controllers\Venta_ClientesController::class, 'destroy'])->name('delete');
 });
 
 

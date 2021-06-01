@@ -87,15 +87,7 @@
 	                propsData: rowData
 	            });
 	            instance.$mount();
-	            /*instance.$on('success', function(event) {
-	              me.$notify({
-	                group: 'global',
-	                type:'success',
-	                title: 'Excelente!',
-	                duration: 10000,
-	                text: event
-	              });
-	            })*/
+
 	            $(cell).empty().append(instance.$el);  
 	      	}
 	    }

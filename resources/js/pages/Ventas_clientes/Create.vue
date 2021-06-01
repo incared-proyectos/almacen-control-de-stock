@@ -21,7 +21,7 @@
 		              	  	<errors-form :errors="validationForm"/>
   							<success-message :message="message_success"/>
 
-					
+							{{alerts}}
 		              		<form  @submit.prevent="formsave" ref="formContainer">
 		              			<div class="row">
 		              				<div class="col-6">
@@ -29,20 +29,31 @@
 		              				</div>
 		              				<div class="col-6 text-right">
 		              					<div class="row">
-		              						<div class="col-6">
+		              						<div class="col-4">
+		              							<div class="input-group mb-3">
+												    <div class="input-group-prepend">
+												      <span class="input-group-text text-uppercase"><b>F.Pagos</b></span>
+												    </div>
+												   	<select class="form-control text-uppercase" v-model="form.fpago" >
+												   		<option value="">Seleccionar..</option>
+												   		<option v-for="item in fpagos" :value="item.cod" class="text-uppercase"> {{item.nombre}}</option>
+												   	</select>
+												</div>
+		              						</div>
+		              						<div class="col-4">
 		              							<div class="input-group mb-3">
 												    <div class="input-group-prepend">
 												      <span class="input-group-text text-uppercase"><b>Codigo</b></span>
 												    </div>
-												    <input type="text" class="form-control" placeholder="example:006798797">
+												    <input type="text" class="form-control" placeholder="example:006798797" v-model="form.codigo">
 												</div>
 		              						</div>
-		              						<div class="col-6">
+		              						<div class="col-4">
 		              							<div class="input-group mb-3">
 												    <div class="input-group-prepend">
 												      <span class="input-group-text text-uppercase"><b>Fecha</b></span>
 												    </div>
-												    <input type="text" class="form-control" placeholder="example:10/20/2020">
+												    <input type="text" class="form-control" placeholder="example:10/20/2020" v-model="form.created_at">
 												</div>
 		              						</div>
 		              					</div>
@@ -61,7 +72,7 @@
 										    <div class="input-group-prepend">
 										      <span class="input-group-text"><b>DNI</b></span>
 										    </div>
-										    <input type="text" class="form-control" placeholder="BUSCAR DNI" @keyup="dni_search" v-model="form.identificacion">
+										    <input type="text" class="form-control" placeholder="BUSCAR DNI" @keyup="dni_search"  v-model="form.cifnif">
 										  
 										</div>
 										
@@ -138,19 +149,30 @@
 			              				</div>
 			              			</div>	
 		              			</div>
-		              			<div class="productos_table" v-if="idselect !== null">
+		              			<div class="productos_table" v-if="route_datatable !== null">
 		              				<hr>
 			              			<div class="row">
-			              				<div class="col-12">
+			              				<div class="col-9">
 			              					<h4 class="text-uppercase"><i class="fas fa-store"></i> Productos</h4>
+			              				</div>
+			              				<div class="col-3 " >
+			              					<div class="alert alert-info mb-0 " v-if="selected_vehiculo !== ''">
+			              						<span ><b>Vehiculo seleccionado:</b> {{selected_vehiculo}}</span>
+			              					</div>
 			              				</div>
 			              			</div>
 			              			<hr>
 			              			<div class="row">
 			              				<div class="col-12">
-			              					<all-table v-if="idselect !== null" :idselected="idselect" ></all-table>
+			              					<all-table v-if="route_datatable !== null" casetable="create" :route="route_datatable" ></all-table>
 			              				</div>
 			              			</div>
+		              			</div>
+
+		              			<div class="row mt-2">
+		              				<div class="col-12 text-center">
+		              					<button class="btn btn-primary" :disabled="buttonsBlock">Guardar</button>
+		              				</div>
 		              			</div>
 		              		</form>
 		              </div>
@@ -175,29 +197,56 @@
 	    },
 	    data: function() {
 	    	return {
-	    		url_table:route('vehiculos.index'),
+	    		route_datatable:null,
 	    		rutas:null,
 	    		validationForm:[],
 	    		clientes_search:[],
 	    		ruta_cliente:[],
 	    		vehiculos_ruta:[],
-	    		idselect:null,
+	    		fpagos:[],
+	    		selected_vehiculo:'',
 	    		message_success:'',	
 
 	    		form:{
-	    			identificacion:'',
+	    			codigo:'',
 	    			nombres:'',
+	    			direccion:'',
+	    			cifnif:'',
 	    			apellidos:'',
 	    			telefono:'',
+	    			fpago:'',
+	    			created_at:'',
+	    			vehiculo_id:null,
+	    			ruta_id:null,
+	    			ventas_lineas:[],
+	    		
+
 	    		},
 	    		fullPage: false
 	    	}
 	    },
   		created: function () {
   			this.init();
+  			
 	    },
 		mounted: function () {
 
+	    },
+	    computed:{
+	    	alerts(){
+	    		let error = this.$store.getters.errorsInput.length;
+	    		if (error > 0) {
+	    			let errors = this.$store.getters.errorsInput;
+					swal.fire({
+					  icon: 'error',
+					  title: 'Oops...',
+					  text: errors[0].error,
+					})
+	    		}
+	    	},
+	    	buttonsBlock(){
+	    		return  this.$store.getters.errorsInput.length > 0 ? true : false;
+	    	}
 	    },
 	    methods:{
 	    	dni_search(event){
@@ -213,21 +262,36 @@
 	    		});
 	    	},
 	    	selectvehicle(id_select){
+	    		//AGREGAMOS LA RUTA PARA MOSTRAR LA TABLA ES DECIR LA RUTA DE CONSULTA PARA NUESTRO DATA-TABLE
+	    		this.route_datatable = route('ventas_clientes.stocks_productos',{id:id_select})
+	    		//--------------------------------------------------------------------------------------------
 
-	    		this.idselect = id_select;
+	    		let vehiculo_selected = this.vehiculos_ruta.find(item => item.id === id_select)
+	    		this.selected_vehiculo = vehiculo_selected.nombre
+
+	    		//Obtenemos el id del vehiculo para guardarlo en la base de datos
+	    		this.form.vehiculo_id = vehiculo_selected.id
 	    		this.vehiculos_ruta = [];
 	    	},
 	    	select_search(id_select){
 	    		let item = this.clientes_search.find(item => item.id === id_select)
 	    		let me = this
 	    		this.ruta_cliente = [];
-	    		this.idselect = null
-	    		this.form.identificacion = item.identificacion
+
+	    		this.route_datatable = null
+
+	    		//DATOS QUE NECESITAREMOS A LA HORA DE GUARDAR 
+	    		this.form.cifnif = item.identificacion
 	    		this.form.nombres = item.nombres
 	    		this.form.apellidos = item.apellidos
 	    		this.form.telefono = item.telefono
+	    		this.form.ruta_id = item.ruta.id
+	    		this.form.direccion = item.ruta.nombre
+	    		//--------------------------------------------
 
-	    		this.ruta_cliente.push(item.ruta);
+	    		this.ruta_cliente.push(item.ruta); //OBTENEMOS LA RUTA DEL CLIENTE Y LA MOSTRAMOS COMO INFORMACION 
+
+	    		//OBTENEMOS TODOS LOS VEHICULOS QUE ESTEN ASOCIADOS AL SIGUIENTE ID, ES DECIR AL ID  DE LA RUTA DE ESTA FORMA BUSCAMOS LOS VEHICULOS ASOCIADOS A ESE ID
 	    		axios.get(route('vehiculos.getby',{id:item.ruta.id})).then((response) => {
 	    			me.vehiculos_ruta = response.data
 	    		}).catch((error) => {
@@ -245,11 +309,14 @@
 				  	me.form[key] = '';
 				  }
 				})
+				me.ruta_cliente = []
+				me.route_datatable = null
         	},
 	    	init(){
 	    		let me = this;
-	    		axios.get(route('rutas.all')).then((response) => {
-	    			me.rutas = response.data
+	    		axios.get(route('ventas_clientes.create')).then((response) => {
+	    			me.rutas = response.data.rutas
+	    			me.fpagos = response.data.fpagos
 	    		}).catch((error) => {
 			       	alert(error.response.data.message)
 	    		})
@@ -265,9 +332,13 @@
 	    	formsave(){
 	    		let loader = this.loader();
 	    		let me = this;
-	    		this.message_success = ''
+	    		me.message_success = ''
 
-	    		axios.post(route('vehiculos.save'),this.form).then((response) => {
+	    		//OBTENEMOS LAS LINEAS DE LAS VENTAS MEDIANTE VUEX Y LA MODIFICACION DEL ARRAY 
+	    		me.form.ventas_lineas = this.$store.getters.itemsModify
+	    		me.form.total_precio = this.$store.getters.precioTotal
+	    		//----------------------------------------------------------------------------
+	    		axios.post(route('ventas_clientes.save'),this.form).then((response) => {
 	    			me.validationForm = ''
 	    			me.clearform()
 	    		    me.message_success = response.data.success
@@ -281,28 +352,8 @@
 			        	alert(error.response.data.message)
 			      	}
 	    		})
-	    	},	
-	    	selects_change(event){
-	    		let select = $(event.currentTarget);
-	    		if (select.val() !== '') {
-	    			let selected_id = Number(select.val());
-
-		    		if (select.attr('data-tipe') == 'rutas') {
-		    			if (this.form.rutas_json.find(item => item.id === selected_id) !== undefined) {
-		    				return;
-		    			}
-		    			let item = this.rutas.find(item => item.id === selected_id)
-
-		    			this.form.rutas_json.push(item)
-		    		}
-	    		}
-	    	},
-	    	selects_delete(type,payload){
-	    		
-	    		if (type == 'rutas') {
-	    			this.form.rutas_json = this.form.rutas_json.filter(item => item.id !== payload) // con filter hacemos de este modo buscamos el id donde sea diferente al payload o al id que le pasamos y asi borra el elemento
-	    		}
 	    	}
+	    	
 
 	    },
 

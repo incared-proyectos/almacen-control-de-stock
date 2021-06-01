@@ -16,7 +16,7 @@
 	              					<router-link  to="/ventas_clientes/create"  class="btn btn-primary">
 							            <i class="fas fa-plus-square"></i>
 							              ADD
-							         </router-link>
+							         </router-link> 
 	              				</div>
 	              			</div>
 	              		</div>
@@ -53,7 +53,7 @@
 			        	data:'cifnif',
 			        },
 			        {
-			        	data:'nombre',
+			        	data:'nombres',
 			        },
 			        {
 			        	data:'direccion',
@@ -61,9 +61,35 @@
 			        {
 			        	data:'created_at',
 			        },
+			        {
+			        	data:'action',
+			        	orderable: false,
+			          	searchable: false,
+			          	createdCell:this.createdCell,
+			        }
 
 			    ],
 	    	}
+	    },
+	     methods:{
+		   createdCell(cell, cellData, rowData) {
+	          	let me = this;
+	 
+	          	$(cell).empty();
+	            let actions = Vue.extend(require('@/components/datatables/actions.vue').default);
+	            let instance = new actions({
+	                propsData: {
+	                	id:rowData.id,
+	                	url_delete:route('ventas_clientes.delete')
+	                },
+	            });
+	            instance.$mount();
+	            instance.$on('edit_emit', function(event) {
+	             	me.$router.push(`ventas_clientes/edit/${rowData.id}`);
+	            })
+	            $(cell).empty().append(instance.$el);
+	          
+	      }
 	    },
 	    mounted(){
 	    }

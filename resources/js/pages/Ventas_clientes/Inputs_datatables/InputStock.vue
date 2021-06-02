@@ -31,6 +31,7 @@
 			      	operation:'dismiss_stock',
 			      	value
 			      })
+			      this.$store.commit('totalesCalculated')
 			    }
 			}
 		}

@@ -15,7 +15,19 @@ const mutations = {
     addItem(state,payload){
       state.itemsActual.push(payload)
       state.itemsModify.push(Object.assign({}, payload));
-      state.precioTotal = state.precioTotal + payload.precio 
+
+     //state.items_modify. = state.precioTotal + payload.precio 
+
+      state.precioTotal = state.precioTotal + payload.precio_total
+
+    },
+    totalesCalculated(state){
+        let priceTot = 0
+        Object.keys(state.itemsModify).map(function (item) {
+            //pricestock = state.itemsModify[item].stock_venta * state.itemsModify[item].precio
+            priceTot += Number(state.itemsModify[item].precio_total)
+        });
+        state.precioTotal = priceTot
     },
     operationItem(state,payload){
         let items_actual = state.itemsActual.find(item => item.id === payload.id)
@@ -26,7 +38,7 @@ const mutations = {
             if (payload.value == '') {
                 items_modify.stock_actual = items_actual.stock_actual 
                 items_modify.stock_venta = '' 
-
+                items_modify.precio_total = 0
                 return;
             }
             if (Number(items_actual.stock_actual) < payload.value ) {
@@ -36,12 +48,18 @@ const mutations = {
             }
             items_modify.stock_actual =  (items_actual.stock_venta ==  payload.value) ? items_modify.stock_actual : Number(items_actual.stock_actual) - payload.value
             items_modify.stock_venta = payload.value
+
+            items_modify.precio_total = items_modify.stock_venta * items_modify.precio
+
+
         }
         if (payload.operation == 'precio_calculated') { 
             let priceTot = 0
-     
-            items_modify.precio = payload.value
+            let pricestock = 0
+            //items_modify.precio_total = 0
+
             Object.keys(state.itemsModify).map(function (item) {
+                //pricestock = state.itemsModify[item].stock_venta * state.itemsModify[item].precio
                 priceTot += Number(state.itemsModify[item].precio)
             });
             state.precioTotal = priceTot

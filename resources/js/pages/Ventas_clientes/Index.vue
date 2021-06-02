@@ -50,6 +50,9 @@
 			        	data:'id',
 			        },
 			        {
+			        	data:'codigo',
+			        },
+			        {
 			        	data:'cifnif',
 			        },
 			        {

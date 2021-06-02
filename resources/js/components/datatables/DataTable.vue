@@ -48,6 +48,7 @@
                             console.log(`${jqXHR}  &&&&  ${ajaxOptions} &&&& ${thrownError}`)
                         },
                     },
+                    "order": [[ 0, 'desc' ]],
 
                    columns: this.columns,
                    createdRow(row, data, dataIndex) {

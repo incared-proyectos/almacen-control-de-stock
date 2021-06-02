@@ -18,6 +18,7 @@ class Venta_cliente extends Model
         'ciudad',
         'fpago',
         'ruta_id',
+        'fecha_venta',
         'vehiculo_id',
         'total_precio'
     ];

@@ -41,6 +41,8 @@ class Venta_ClientesController extends Controller
             return 0;
         })->addColumn('producto_id', function($row){
             return $row['id'];
+        })->addColumn('precio_total', function($row){
+            return 0;
         })->rawColumns(['action','stock_vehicle']);
         return $table->make(true);    
     }
@@ -52,7 +54,7 @@ class Venta_ClientesController extends Controller
         $validator = Validator::make($all,[
             'fpago' => 'required',
             'codigo' => 'required',
-            'created_at' => 'required',
+            'fecha_venta' => 'required',
             'cifnif' => 'required',
             'nombres' => 'required',
             'direccion'=>'required',
@@ -70,12 +72,26 @@ class Venta_ClientesController extends Controller
     {
         return response()->json(
             [
+                'codigo'=>$this->generate_cod_venta(),
                 'fpagos'=>Forma_de_pago::all(),
                 'rutas'=> Ruta::all()
             ]
         );
     }
+    public function generate_cod_venta(){
+        $venta  = Venta_cliente::orderBy('id','DESC')->first();
+        $codigo = sprintf("%08d",1);
+        if (!empty($venta)) {
+            if (!empty($venta->codigo)) {
+                $exp = $venta->codigo;
 
+                $codigo_result = sprintf("%00d", $exp);
+                $codigo = $codigo_result+1;
+                $codigo = sprintf("%08d", $codigo);
+            }
+        }
+        return $codigo;
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -90,6 +106,7 @@ class Venta_ClientesController extends Controller
             return response()->json(['error'=>$validator->errors()->all()],422);
         }else{
             $table = new Venta_cliente();
+           
             $table->fill($all)->save();
             $ventac = Venta_cliente::latest('id')->first();
             foreach ($all['ventas_lineas'] as $lineas) {
@@ -100,6 +117,7 @@ class Venta_ClientesController extends Controller
                     $table_lineas->stock_venta = $lineas['stock_venta'];
                     $table_lineas->precio = $lineas['precio'];
                     $table_lineas->producto_id = $lineas['producto_id'];
+                    $table_lineas->precio_total = $lineas['precio_total'];
                     $table_lineas->venta_cliente_id = $ventac->id;
                     $stock_vehiculos->stock_product = $lineas['stock_actual'];
                     $stock_vehiculos->save();
@@ -185,6 +203,8 @@ class Venta_ClientesController extends Controller
                     $table_lineas->precio = $lineas['precio'];
                     //$table_lineas->producto_id = $lineas['producto_id'];
                     //$table_lineas->venta_cliente_id = $ventac->id;
+
+                    $table_lineas->precio_total = $lineas['precio_total'];
                     $stock_vehiculos->stock_product =  $lineas['stock_actual'];
                     $stock_vehiculos->save();
                     $table_lineas->save();

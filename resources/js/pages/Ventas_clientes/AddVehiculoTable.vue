@@ -63,6 +63,12 @@
 			          	searchable: false,
 			          	createdCell:this.createdCellPrice,
 			        },
+			        {
+			        	data:'precio_total',
+			        	orderable: false,
+			          	searchable: false,
+			          	createdCell:this.createdCellPriceTotal,
+			        },
 			 
 
 			    ],
@@ -111,6 +117,17 @@
 	    	createdCellPrice(cell,cellData,rowData){
 	          	$(cell).empty();
 	            let actions = Vue.extend(require('@/pages/Ventas_clientes/Inputs_datatables/InputPrecio.vue').default);
+	            let store = this.$store;
+	            let instance = new actions({
+	            	store,
+	                propsData: rowData
+	            });
+	            instance.$mount();
+	            $(cell).empty().append(instance.$el);  
+	    	},
+	    	createdCellPriceTotal(cell,cellData,rowData){
+	          	$(cell).empty();
+	            let actions = Vue.extend(require('@/pages/Ventas_clientes/Inputs_datatables/InputPrecioCalculated.vue').default);
 	            let store = this.$store;
 	            let instance = new actions({
 	            	store,

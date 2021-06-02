@@ -49,9 +49,10 @@
                         },
                     },
 
-                   columns: this.columns,
+                    columns: this.columns,
                     "paging":   false,
                     "info":     false,
+
 
                    createdRow(row, data, dataIndex) {
                       vm.$emit('created-row',$(row).attr( 'id','codenv'+data.id ));

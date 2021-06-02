@@ -23,97 +23,30 @@
 
 							{{alerts}}
 		              		<form  @submit.prevent="formsave" ref="formContainer">
-		              			<div class="row">
-		              				<div class="col-6">
-		              					
-		              				</div>
-		              				<div class="col-6 text-right">
-		              					<div class="row">
-		              						<div class="col-4">
-		              							<div class="input-group mb-3">
-												    <div class="input-group-prepend">
-												      <span class="input-group-text text-uppercase"><b>F.Pagos</b></span>
-												    </div>
-												   	<select class="form-control text-uppercase" v-model="form.fpago" >
-												   		<option value="">Seleccionar..</option>
-												   		<option v-for="item in fpagos" :value="item.cod" class="text-uppercase"> {{item.nombre}}</option>
-												   	</select>
-												</div>
-		              						</div>
-		              						<div class="col-4">
-		              							<div class="input-group mb-3">
-												    <div class="input-group-prepend">
-												      <span class="input-group-text text-uppercase"><b>Codigo</b></span>
-												    </div>
-												    <input type="text" class="form-control" placeholder="example:006798797" v-model="form.codigo">
-												</div>
-		              						</div>
-		              						<div class="col-4">
-		              							<div class="input-group mb-3">
-												    <div class="input-group-prepend">
-												      <span class="input-group-text text-uppercase"><b>Fecha</b></span>
-												    </div>
-												    <input type="text" class="form-control" placeholder="example:10/20/2020" v-model="form.created_at">
-												</div>
-		              						</div>
-		              					</div>
-		              				</div>
-		              			</div>
-		              			<hr>
-		              			<div class="row">
-		              				<div class="col-12">
-		              					<h4 class="text-uppercase"><i class="fas fa-shopping-cart"></i> DATOS CLIENTE</h4>
-		              				</div>
-		              			</div>
-		              			<hr>
-		              			<div class="row">
-		              				<div class="col-3">
-			              				<div class="input-group ">
-										    <div class="input-group-prepend">
-										      <span class="input-group-text"><b>DNI</b></span>
-										    </div>
-										    <input type="text" class="form-control" placeholder="BUSCAR DNI" @keyup="dni_search"  v-model="form.cifnif">
-										  
-										</div>
-										
-										<div class="search_dni">
-									    	<ul class="search_ul">
-									    		<li class="search_li" v-for="item in clientes_search" :key="item.id" @click="select_search(item.id)"><i class="fas fa-address-card"></i> {{item.nombres}} || {{item.apellidos}}</li>
-									    	</ul>
-									    </div>
-		              				</div>
-		              				<div class="col-3">
-			              				<div class="input-group mb-3">
-										    <div class="input-group-prepend">
-										      <span class="input-group-text text-uppercase"><b>Nombres</b></span>
-										    </div>
-										    <input type="text" class="form-control" placeholder="NOMBRES..." v-model="form.nombres">
-										 </div>
-		              				</div>
-		              				<div class="col-3">
-			              				<div class="input-group mb-3">
-										    <div class="input-group-prepend">
-										      <span class="input-group-text text-uppercase"><b>Apellidos</b></span>
-										    </div>
-										    <input type="text" class="form-control" placeholder="APELLIDOS..." v-model="form.apellidos">
-										 </div>
-		              				</div>
-		              				<div class="col-3">
-			              				<div class="input-group mb-3">
-										    <div class="input-group-prepend">
-										      <span class="input-group-text text-uppercase"><b>Telefono</b></span>
-										    </div>
-										    <input type="text" class="form-control" placeholder="example:+5764678978789" v-model="form.telefono">
-										</div>
-		              				</div>
-		              			</div>
-		              			<div class="row mt-2">
-		              				<div class="col-6">
-		              					<span v-for="item in ruta_cliente" :key="item.id" class="items_selected_json bg bg-primary">
-		              						{{item.nombre}} | {{item.direccion}}
-              							</span>
-		              				</div>
-		              			</div>
+		              			<form-header 
+		              				:fpagos="fpagos" 
+		              				:rutas="rutas" 
+		              				:form="form"
+		              				:routedatatable="route_datatable"
+		              				:createsearch="clientes_search"
+		              				:rutacliente="ruta_cliente"
+		              				
+    								@fpago="form.fpago = $event"
+    								@codigo="form.codigo = $event"
+    								@createdat="form.fecha_venta = $event"
+    								@cifnif="form.cifnif = $event"
+    								@nombres="form.nombres = $event"
+    								@apellidos="form.apellidos = $event"
+    								@telefono="form.telefono = $event"
+    								@vehiculoid="form.vehiculo_id = $event"
+    								@rutaid="form.ruta_id = $event"
+    								@vehiculosruta="vehiculos_ruta = $event"
+    								@routedatatable="route_datatable = $event"
+    								@rutacliente="ruta_cliente = $event"
+
+		              				>
+
+		              			</form-header>
 		              			<div class="vehiculos_form" v-if="vehiculos_ruta.length > 0">
 			              			<hr>
 			              			<div class="row">
@@ -190,10 +123,11 @@
 	import ErrorsForm from "@/components/ValidationErrors.vue"
 	import successMessage from '@/components/SuccessMessage';
 	import AllTable from '@/Pages/Ventas_clientes/AddVehiculoTable';
+	import FormHeader from '@/Pages/Ventas_clientes/FormHeader';
 
 	export default {
 		components: {
-	      SectionContent,HeaderTitle,ErrorsForm,successMessage,AllTable
+	      SectionContent,HeaderTitle,ErrorsForm,successMessage,AllTable,FormHeader
 	    },
 	    data: function() {
 	    	return {
@@ -240,18 +174,6 @@
 	    	}
 	    },
 	    methods:{
-	    	dni_search(event){
-	    		let search = $(event.currentTarget).val();
-	    		let me = this;
-	    		axios.post(route('clientes.search'), {
-	    		  	search
-	    		}).then((response) => {
-	    		  me.clientes_search = response.data
-
-	    		}).catch((error) => {
-	    		  console.error(error);
-	    		});
-	    	},
 	    	selectvehicle(id_select){
 
 	    		this.route_datatable = route('ventas_clientes.stocks_productos',{id:id_select});
@@ -262,32 +184,6 @@
 	    		this.form.vehiculo_id = vehiculo_selected.id
 	    		this.vehiculos_ruta = [];
 	    	},
-	    	select_search(id_select){
-	    		let item = this.clientes_search.find(item => item.id === id_select)
-	    		let me = this
-	    		this.ruta_cliente = [];
-	    		this.route_datatable = null
-
-	    		//DATOS QUE NECESITAREMOS A LA HORA DE GUARDAR 
-	    		this.form.cifnif = item.identificacion
-	    		this.form.nombres = item.nombres
-	    		this.form.apellidos = item.apellidos
-	    		this.form.telefono = item.telefono
-	    		this.form.ruta_id = item.ruta.id
-	    		this.form.direccion = item.ruta.nombre
-	    		//--------------------------------------------
-
-	    		this.ruta_cliente.push(item.ruta); //OBTENEMOS LA RUTA DEL CLIENTE Y LA MOSTRAMOS COMO INFORMACION 
-
-	    		//OBTENEMOS TODOS LOS VEHICULOS QUE ESTEN ASOCIADOS AL SIGUIENTE ID, ES DECIR AL ID  DE LA RUTA DE ESTA FORMA BUSCAMOS LOS VEHICULOS ASOCIADOS A ESE ID
-	    		axios.get(route('vehiculos.getby',{id:item.ruta.id})).then((response) => {
-	    			me.vehiculos_ruta = response.data
-	    		}).catch((error) => {
-			       	alert(error.response.data.message)
-	    		})
-	    		this.clientes_search = []
-	    	},
-
 	    	clearform(){
         		let me = this;
         		Object.keys(this.form).forEach(function(key) {
@@ -344,10 +240,7 @@
 			      	}
 	    		})
 	    	}
-	    	
 
 	    },
-
-
 	}
 </script>

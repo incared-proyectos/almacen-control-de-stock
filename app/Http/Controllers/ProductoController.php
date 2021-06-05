@@ -42,7 +42,18 @@ class ProductoController extends Controller
         })->rawColumns(['action','stock_vehicle']);
         return $table->make(true);    
     }
-
+    /*
+    * VALIDATIONS FORMS
+    */
+    public function validate_form($all){
+        $validator = Validator::make($all,[
+            'nombre' => 'required',
+            'stock' => 'required',
+            'precio' => 'required',
+            'marca' => 'required',
+        ]);
+        return $validator;
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -61,7 +72,15 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $all =  $request->all();
+        $validator = $this->validate_form($all);
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()->all()],422);
+        }else{
+            $table = new Producto();
+            $table->fill($all)->save();
+            return response()->json(['success'=>'Producto guardado con exito']);
+        }
     }
 
     /**
@@ -93,9 +112,17 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $all =  $request->all();
+        $validator = $this->validate_form($all);
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()->all()],422);
+        }else{
+            $table = Producto::find($all['id']);
+            $table->fill($all)->save();
+            return response()->json(['success'=>'Producto Actualizado con exito']);
+        }
     }
 
     /**
@@ -104,8 +131,13 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $all = $request->all();
+        $table = Producto::find($all['id_data']);
+        if ($table) {
+            $table->delete();
+        }
+
     }
 }

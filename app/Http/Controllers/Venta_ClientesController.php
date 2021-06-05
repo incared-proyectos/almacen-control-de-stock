@@ -8,6 +8,7 @@ use Yajra\Datatables\Datatables;
 use App\Models\Venta_cliente;
 use App\Models\Venta_clientes_linea;
 use App\Models\Producto;
+use App\Models\Vehiculo;
 use App\Models\Stock_vehiculo;
 use App\Models\Ruta;
 use App\Models\Forma_de_pago;
@@ -26,25 +27,24 @@ class Venta_ClientesController extends Controller
         })->rawColumns(['action']);
         return $table->make(true);      
     }
-    public function stocks_productos($id)
+    public function stocks_productos($id,Request $request)
     {
-        $table = Datatables::of(Producto::all());
-        $table->addColumn('action', function($row){
-            return 'delete';
-        })->addColumn('stock_actual', function($row) use ($id){
-           $vehiculo = Stock_vehiculo::where('vehiculos_id',$id)->where('productos_id',$row['id'])->first();
-           if (empty($vehiculo)) {
-               return 0;
-           }
-           return $vehiculo->stock_product;
-        })->addColumn('stock_venta', function($row){
-            return 0;
-        })->addColumn('producto_id', function($row){
-            return $row['id'];
-        })->addColumn('precio_total', function($row){
-            return 0;
-        })->rawColumns(['action','stock_vehicle']);
-        return $table->make(true);    
+        $all = $request->all();
+        //$producto = Producto::where('nombre', 'like', '%'.$all['search'].'%')->get();
+
+        $vehiculos = Vehiculo::with(['productos' => function($query) use ($request) { 
+           $query->where('productos.nombre','like', '%' . $request->search  . '%'); 
+         }
+        ])->where('id',$id)->first();
+        
+        $vehiculos->productos->map(function($item) use ($id) {
+            $item->stock_actual = $item->pivot->stock_product;
+            $item->stock_venta = 0;
+            $item->producto_id = $item->id;
+            $item->precio_total = 0;
+            unset($item->pivot);
+        });
+        return $vehiculos->productos;
     }
 
     /*
@@ -135,28 +135,33 @@ class Venta_ClientesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function ventas_lineas($id)
+    public function ventas_lineas(Request $request,$id)
     {
-        $ventas_lineas = Venta_clientes_linea::where('venta_cliente_id',$id)->get();
-        $ventas = Venta_cliente::find($id);
-        $vehiculo = Stock_vehiculo::where('vehiculos_id',$ventas->vehiculo_id)->first();
+        $all = $request->all();
+        $table = Venta_clientes_linea::where('venta_cliente_id',$id)->get();
 
-        $table = Datatables::of(Venta_clientes_linea::where('venta_cliente_id',$id)->get());
-        $table->addColumn('action', function($row){
-            return 'delete';
-        })->addColumn('stock_actual', function($row) use ($id){
+        $table->map(function($item) use ($id) {
+            $ventas = Venta_cliente::find($id);
+            $vehiculo = Stock_vehiculo::where('vehiculos_id',$ventas->vehiculo_id)->where('productos_id',$item->producto_id)->first();
+            if (empty($vehiculo)) {
+                return 0;
+            }
+            $item->stock_actual = $vehiculo->stock_product;
+            $item->id_linea = $item->id;
 
-           $ventas = Venta_cliente::find($id);
-           $vehiculo = Stock_vehiculo::where('vehiculos_id',$ventas->vehiculo_id)->where('productos_id',$row['producto_id'])->first();
-           if (empty($vehiculo)) {
-               return 0;
-           }
-           return $vehiculo->stock_product;
-        })->addColumn('stock', function($row){
-            $producto = Producto::where('id',$row['producto_id'])->first();
-            return $producto->stock;
-        })->rawColumns(['action']);
-        return $table->make(true);
+            $producto = Producto::where('id',$item->producto_id)->first();
+            $item->stock = (!empty($producto)) ? $producto->stock : 0;
+            /*
+            $item->stock_venta = 0;
+            $item->producto_id = $item->id;
+            $item->precio_total = 0;*/
+
+        });
+
+        return $table;
+
+
+
     }
 
     /**
@@ -196,18 +201,29 @@ class Venta_ClientesController extends Controller
             foreach ($all['ventas_lineas'] as $lineas) {
                 if ($lineas['stock_venta'] > 0) {          
                     $stock_vehiculos = Stock_vehiculo::where('vehiculos_id',$all['vehiculo_id'])->where('productos_id',$lineas['producto_id'])->first();
-    
-                    $table_lineas = Venta_clientes_linea::find($lineas['id']);
-                    $table_lineas->nombre = $lineas['nombre'];
-                    $table_lineas->stock_venta = $lineas['stock_venta'];
-                    $table_lineas->precio = $lineas['precio'];
-                    //$table_lineas->producto_id = $lineas['producto_id'];
-                    //$table_lineas->venta_cliente_id = $ventac->id;
+                    $lineas['id_linea'] = (isset($lineas['id_linea'])) ? $lineas['id_linea'] : 0;
+                    $table_lineas = Venta_clientes_linea::where('id',$lineas['id_linea'])->first();
+                    if (!empty($table_lineas)) {                  
+                        $table_lineas->nombre = $lineas['nombre'];
+                        $table_lineas->stock_venta = $lineas['stock_venta'];
+                        $table_lineas->precio = $lineas['precio'];
+   
+                        $table_lineas->precio_total = $lineas['precio_total'];
+                      
+                        $table_lineas->save();
+                    }else{
 
-                    $table_lineas->precio_total = $lineas['precio_total'];
+                        $table_lineas = new Venta_clientes_linea();
+                        $table_lineas->nombre = $lineas['nombre'];
+                        $table_lineas->stock_venta = $lineas['stock_venta'];
+                        $table_lineas->precio = $lineas['precio'];
+                        $table_lineas->producto_id = $lineas['producto_id'];
+                        $table_lineas->precio_total = $lineas['precio_total'];
+                        $table_lineas->venta_cliente_id = $all['id'];
+                        $table_lineas->save();
+                    }
                     $stock_vehiculos->stock_product =  $lineas['stock_actual'];
                     $stock_vehiculos->save();
-                    $table_lineas->save();
                 }
             }
 

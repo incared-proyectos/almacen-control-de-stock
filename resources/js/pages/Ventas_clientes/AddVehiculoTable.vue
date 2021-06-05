@@ -1,20 +1,44 @@
 <template>
 	<div>
+		<div class="row">
+			<div class="col-7">
+				<div class="input-group ">
+				  <div class="input-group-prepend">
+				    <span class="input-group-text" id="basic-addon1"><i class="fas fa-search text-blue"></i> </span>
+				  </div>
+				  <input type="text" class="form-control" placeholder="Buscar productos en vehiculo seleccionado.." aria-label="Username" aria-describedby="basic-addon1" @keyup="search_product">
+				</div>
+				<div class="search_div">
+			    	<ul class="search_ul">
+			    		<li class="search_li" v-for="item in lineas_search" :key="item.id" @click="select_search(item.id)"><i class="fas fa-address-card"></i> {{item.nombre}} || {{item.stock}}</li>
+			    	</ul>
+			    </div>
+			</div>
+		</div>
         <div class="table-responsive">
-            <data-table :columns="columns" class="table"  :urltable="url_table"></data-table>
-            <div class="container-fluid">
-	            <div class="row justify-content-end">
-	            	<div class="col-4 p-0">
-			            <table class="table table-bordered">
-			            	<tr>
-			            		
-			            		<td >Total:</td>
-			            		<td>{{total}}</td>
-			            	</tr>
-			            </table>
-		            </div>
-	            </div>
-            </div>
+            <table class="table table-bordered">
+            	<thead>
+            		<th>Nombre</th>
+            		<th>Stock</th>
+            		<th>Stock Actual</th>
+            		<th>Stock Venta</th>
+            		<th>Precio</th>
+            		<th>Precio Total</th>
+            	</thead>
+            	<tbody>
+            		<inputs-table 
+            			v-for="item in lineas_data"
+            			:item="item"
+            			:key="item.id"
+            		></inputs-table>
+
+            			<tr>
+			            	<td colspan="4"></td>
+		            		<td class="text-center text-uppercase font-weight-bold">Total:</td>
+		            		<td >{{total}}</td>
+		            	</tr>
+            	</tbody>
+            </table>
 		</div>
 	</div>
 </template>
@@ -22,56 +46,35 @@
 
 	import DataTable from '@/components/datatables/DataTableProductos.vue';
 	import  {mapGetters,mapActions} from 'vuex'
+	import InputsTable from '@/Pages/Ventas_clientes/InputsTable.vue';
+	const shortid = require('shortid');
 
 	export default {
-		props:['stockinputs','casetable','route'],
+		props:['stockinputs','casetable','route','routesearch','productos'],
 		components: {
-			DataTable
+			DataTable,InputsTable
 	    },
 	    created(){
-
-	    	this.init();
+	    	this.$store.commit("clearArray");
+	    	if (this.casetable == 'update') {
+	    		if (this.productos == 'init') {
+	    			this.init();
+	    			return;
+	    		}
+	    	}
 	    },
 	    data: function() {
 	    	return {
 	    		url_table:this.route,
-	    		columns:[
-			        {
-			        	data:'id',
-			        },
-			        {
-			        	data:'nombre',
-			        },
-			        {
-			        	data:'stock',
-			        },
-			        {
-			        	data:'stock_actual',
-			        	orderable: false,
-			          	searchable: false,
-			          	createdCell:this.createdCellStockActual,
-			        },
-			        {
-			        	data:'stock_venta',
-			        	orderable: false,
-			          	searchable: false,
-			          	createdCell:this.createdCellStock,
-			        },
-			        {
-			        	data:'precio',
-			        	orderable: false,
-			          	searchable: false,
-			          	createdCell:this.createdCellPrice,
-			        },
-			        {
-			        	data:'precio_total',
-			        	orderable: false,
-			          	searchable: false,
-			          	createdCell:this.createdCellPriceTotal,
-			        },
-			 
+		    	lineas_data:[],
+		    	lineas_search:[],
+	    		lineas:{
+		    		stock_actual:[],
+		    		stock_venta:[],
+		    		precio:[],
+		    		precio_total:[]
+	    		},
 
-			    ],
 	    	}
 	    },
 	    computed:{
@@ -82,61 +85,42 @@
 	    methods:{
 	    	...mapActions(['setStocksItem']),
 	    	init(){
-	    		this.$store.commit("clearArray");
-
-	    	},
-	    	createdCellStock(cell,cellData,rowData){
 	    		let me = this;
-	          	$(cell).empty();
-	          	
-	          	//AGREGAMOS LOS ITEMS QUE VENGA CADA CELDA TRAE EN EL ROW DATA  TODA LA DATA DE CADA ITEM DE ESTE MODO PODREMOS MODIFCARLA CON EL STORE
-	     		this.setStocksItem(rowData);
+	    		axios.get(this.url_table).then((response) => {
+	    			me.lineas_data = response.data
+	    			for (let item of Object.values(me.lineas_data)) {
 
-	            let actions = Vue.extend(require('@/pages/Ventas_clientes/Inputs_datatables/InputStock.vue').default);
-	            let store = this.$store;
-	            rowData.cellsedit = this.stockinputs
-	            let instance = new actions({
-	            	store,
-	                propsData: rowData
-	            });
-	            instance.$mount();
-	            $(cell).empty().append(instance.$el);  
+					 	me.setStocksItem(item);
+					}
+	    		}).catch((error) => {
+			       	alert(error.response.data.message)
+	    		})
 	    	},
-	    	createdCellStockActual(cell,cellData,rowData){
+	    	search_product(event){
 	    		let me = this;
-	          	$(cell).empty();
-	            let actions = Vue.extend(require('@/pages/Ventas_clientes/Inputs_datatables/InputStockActual.vue').default);
-	            let store = this.$store;
-	            let instance = new actions({
-	            	store,
-	                propsData: rowData
-	            });
-	            instance.$mount();
-	            $(cell).empty().append(instance.$el);  
+	    		let search = $(event.currentTarget).val();
+	    		axios.get(this.routesearch,{ params: { search} }).then((response) => {
+	    			me.lineas_search = response.data
+	    		}).catch((error) => {
+	    			console.log(error);
+	    		})
 	    	},
-	    	createdCellPrice(cell,cellData,rowData){
-	          	$(cell).empty();
-	            let actions = Vue.extend(require('@/pages/Ventas_clientes/Inputs_datatables/InputPrecio.vue').default);
-	            let store = this.$store;
-	            let instance = new actions({
-	            	store,
-	                propsData: rowData
-	            });
-	            instance.$mount();
-	            $(cell).empty().append(instance.$el);  
-	    	},
-	    	createdCellPriceTotal(cell,cellData,rowData){
-	          	$(cell).empty();
-	            let actions = Vue.extend(require('@/pages/Ventas_clientes/Inputs_datatables/InputPrecioCalculated.vue').default);
-	            let store = this.$store;
-	            let instance = new actions({
-	            	store,
-	                propsData: rowData
-	            });
-	            instance.$mount();
-	            $(cell).empty().append(instance.$el);  
+	    	select_search(index){
+	    		let search_item = this.lineas_search.find(item => item.id === index)
+	    		let search_item_selecteds = null;
+	    		if (this.casetable == 'update') {
+	    			//CUANDO ES UNA ACTUALIZACION TENEMOS QUE PASAR EL PRODUCTO ID PARA QUE SE IGUAL AL ID DE LA BUSQUEDA Y VALIDAR SI YA EXISTE ESE PRODUCTO AGREGADO 
+	    			search_item_selecteds =  this.lineas_data.find(item => item.producto_id === index) 
+	    		}else{
+	    			search_item_selecteds =  this.lineas_data.find(item => item.id === index) 
+	    		}
+
+	    		if (search_item_selecteds === undefined) {
+	    			this.lineas_data.push(search_item);
+	    			this.setStocksItem(search_item)
+	    		}
+	    		this.lineas_search = []
 	    	}
 	    }
-
 	}
 </script>

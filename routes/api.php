@@ -30,6 +30,9 @@ Route::group(['prefix'=>'almacen','as'=>'almacen.'], function(){
 Route::group(['prefix'=>'productos','as'=>'productos.'], function(){
 	Route::get('/', [App\Http\Controllers\ProductoController::class, 'index'])->name('index');
 	Route::get('/stocks_productos/{id}', [App\Http\Controllers\ProductoController::class, 'stocks_productos'])->name('stocks_productos');
+	Route::post('/save', [App\Http\Controllers\ProductoController::class, 'store'])->name('save');
+	Route::post('/update', [App\Http\Controllers\ProductoController::class, 'update'])->name('update');
+	Route::post('/delete', [App\Http\Controllers\ProductoController::class, 'destroy'])->name('delete');
 
 });
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-06-2021 a las 04:05:52
+-- Tiempo de generación: 05-06-2021 a las 03:40:22
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 7.4.13
 
@@ -184,8 +184,8 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id`, `nombre`, `stock`, `precio`, `precio_rebaja`, `marca`, `descripcion`, `created_at`, `updated_at`) VALUES
-(1, 'paquete de galletas', 74, 100, NULL, 'Royale', 'asdasd', '2021-05-24 14:43:35', '2021-05-31 03:45:43'),
-(2, 'Galletas de  chocolate', 70, 100, NULL, 'Royale club', 'asdasdasd', '2021-05-24 14:43:35', '2021-05-28 01:55:18');
+(1, 'Galletas de  chocolate2', 70, 100, NULL, 'Royale club', 'asdasdasd', '2021-05-24 14:43:35', '2021-06-04 20:05:55'),
+(2, 'Galletas 3', 999, 10000, NULL, '', '', '2021-06-04 18:32:34', '2021-06-04 18:32:34');
 
 -- --------------------------------------------------------
 
@@ -257,10 +257,10 @@ CREATE TABLE `stock_vehiculos` (
 INSERT INTO `stock_vehiculos` (`id`, `vehiculos_id`, `productos_id`, `stock_product`) VALUES
 (1, 2, 1, '2'),
 (2, 2, 2, '0'),
-(3, 4, 1, '135'),
-(4, 4, 2, '98'),
-(5, 3, 1, '17'),
-(6, 3, 2, '13'),
+(3, 4, 1, '103'),
+(4, 4, 2, '93'),
+(5, 3, 1, '8'),
+(6, 3, 2, '10'),
 (7, 6, 1, '3'),
 (8, 6, 2, '3');
 
@@ -334,6 +334,7 @@ CREATE TABLE `venta_clientes` (
   `ruta_id` int(11) NOT NULL,
   `vehiculo_id` int(11) NOT NULL,
   `total_precio` double NOT NULL,
+  `fecha_venta` date DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -342,12 +343,10 @@ CREATE TABLE `venta_clientes` (
 -- Volcado de datos para la tabla `venta_clientes`
 --
 
-INSERT INTO `venta_clientes` (`id`, `codigo`, `cifnif`, `direccion`, `nombres`, `apellidos`, `telefono`, `ciudad`, `fpago`, `ruta_id`, `vehiculo_id`, `total_precio`, `created_at`, `updated_at`) VALUES
-(1, '5664654645', '4546545646', 'Ruta 1', 'Arnoldo', 'Perez', '56564656', NULL, 'cond', 1, 2, 400, '2021-05-31 19:11:48', '2021-05-31 19:13:02'),
-(2, '11669977', '25129301', 'Ruta 1', 'Pedro J', 'Avila', '0545645646', NULL, 'cond', 1, 2, 200, '2021-05-31 19:12:16', '2021-05-31 19:12:16'),
-(3, '9977888', '546546546', 'Ruta 1', 'pruebas', 'pruebas', '464564654', NULL, 'cond', 2, 2, 1000, '2021-05-31 19:13:32', '2021-05-31 19:13:32'),
-(4, '879798798', '4546545646', 'Ruta 1', 'Arnoldo', 'Perez', '56564656', NULL, 'cond', 1, 2, 400, '2021-06-01 01:55:14', '2021-06-01 01:55:14'),
-(5, '4654654654', '251293013', 'Ruta 1', 'pedro45', 'pedro4', '04127709844', NULL, 'cond', 2, 3, 300, '2021-06-01 01:59:33', '2021-06-01 01:59:33');
+INSERT INTO `venta_clientes` (`id`, `codigo`, `cifnif`, `direccion`, `nombres`, `apellidos`, `telefono`, `ciudad`, `fpago`, `ruta_id`, `vehiculo_id`, `total_precio`, `fecha_venta`, `created_at`, `updated_at`) VALUES
+(8, '00000001', '4546545646', 'Ruta 1', 'Arnoldo', 'Perez', '56564656', NULL, 'cond', 1, 4, 1100, '2021-06-01', '2021-06-01 20:25:03', '2021-06-03 00:54:38'),
+(9, '00000002', '251293013', 'Ruta 1', 'pedro45', 'pedro4', '04127709844', NULL, 'cond', 2, 3, 600, '2021-06-01', '2021-06-01 20:30:50', '2021-06-01 20:30:50'),
+(11, '00000003', '4546545646', 'Ruta 1', 'Arnoldo', 'Perez', '56564656', NULL, 'cond', 1, 4, 600, '2021-06-04', '2021-06-04 14:03:28', '2021-06-04 14:32:41');
 
 -- --------------------------------------------------------
 
@@ -360,6 +359,7 @@ CREATE TABLE `venta_clientes_lineas` (
   `nombre` varchar(200) NOT NULL,
   `stock_venta` int(11) NOT NULL,
   `precio` double NOT NULL,
+  `precio_total` double DEFAULT NULL,
   `venta_cliente_id` int(11) NOT NULL,
   `producto_id` int(11) NOT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -370,14 +370,14 @@ CREATE TABLE `venta_clientes_lineas` (
 -- Volcado de datos para la tabla `venta_clientes_lineas`
 --
 
-INSERT INTO `venta_clientes_lineas` (`id`, `nombre`, `stock_venta`, `precio`, `venta_cliente_id`, `producto_id`, `created_at`, `updated_at`) VALUES
-(1, 'paquete de galletas', 2, 300, 1, 1, '2021-05-31 19:11:48', '2021-05-31 19:13:02'),
-(2, 'Galletas de  chocolate', 1, 100, 1, 2, '2021-05-31 19:11:48', '2021-05-31 19:11:48'),
-(3, 'paquete de galletas', 3, 100, 2, 1, '2021-05-31 19:12:16', '2021-05-31 19:12:16'),
-(4, 'paquete de galletas', 3, 900, 3, 1, '2021-05-31 19:13:32', '2021-05-31 19:13:32'),
-(5, 'Galletas de  chocolate', 2, 100, 3, 2, '2021-05-31 19:13:32', '2021-05-31 19:13:32'),
-(6, 'paquete de galletas', 2, 300, 4, 1, '2021-06-01 01:55:14', '2021-06-01 01:55:14'),
-(7, 'paquete de galletas', 3, 300, 5, 1, '2021-06-01 01:59:33', '2021-06-01 01:59:33');
+INSERT INTO `venta_clientes_lineas` (`id`, `nombre`, `stock_venta`, `precio`, `precio_total`, `venta_cliente_id`, `producto_id`, `created_at`, `updated_at`) VALUES
+(8, 'paquete de galletas', 3, 100, 300, 6, 1, '2021-06-01 19:19:48', '2021-06-04 14:28:07'),
+(10, 'paquete de galletas', 9, 100, 900, 8, 1, '2021-06-01 20:25:03', '2021-06-03 00:54:38'),
+(11, 'Galletas de  chocolate', 2, 100, 200, 8, 2, '2021-06-01 20:25:03', '2021-06-01 20:25:03'),
+(12, 'paquete de galletas', 3, 100, 300, 9, 1, '2021-06-01 20:30:50', '2021-06-01 20:30:50'),
+(13, 'Galletas de  chocolate', 3, 100, 300, 9, 2, '2021-06-01 20:30:50', '2021-06-01 20:30:50'),
+(14, 'Galletas de  chocolate', 3, 100, 300, 11, 2, '2021-06-04 14:03:28', '2021-06-04 14:03:28'),
+(17, 'paquete de galletas', 3, 100, 300, 11, 1, '2021-06-04 14:34:26', '2021-06-04 14:34:26');
 
 --
 -- Índices para tablas volcadas
@@ -521,7 +521,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `rutas`
@@ -557,13 +557,13 @@ ALTER TABLE `vehiculos`
 -- AUTO_INCREMENT de la tabla `venta_clientes`
 --
 ALTER TABLE `venta_clientes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `venta_clientes_lineas`
 --
 ALTER TABLE `venta_clientes_lineas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

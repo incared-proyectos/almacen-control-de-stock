@@ -10,9 +10,9 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     
     <script>let base_path_vue_router = '' ;</script>
-    @if(!empty(env('APP_PATH_LOCAL_VUE')))
+    @if(!empty(Config::get('vueconfig.path')))
         <script>
-            base_path_vue_router = "{{ env('APP_PATH_LOCAL_VUE') }}";
+            base_path_vue_router = "{{ Config::get('vueconfig.path') }}";
         </script>
     @endif
     @routes

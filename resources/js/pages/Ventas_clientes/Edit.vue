@@ -27,7 +27,7 @@
 		              				:fpagos="fpagos" 
 		              				:rutas="rutas" 
 		              				:form="form"
-		              				:routedatatable="route_datatable"
+		              				:routeapi="route_search"
 		              				:createsearch="clientes_search"
 		              				:rutacliente="ruta_cliente"
 		              				
@@ -41,7 +41,7 @@
     								@vehiculoid="form.vehiculo_id = $event"
     								@rutaid="form.ruta_id = $event"
     								@vehiculosruta="vehiculos_ruta = $event"
-    								@routedatatable="route_datatable = $event"
+    								@routeapi="route_search = $event"
     								@rutacliente="ruta_cliente = $event"
 
 		              				>
@@ -82,7 +82,7 @@
 			              				</div>
 			              			</div>	
 		              			</div>
-		              			<div class="productos_table" v-if="route_datatable !== null">
+		              			<div class="productos_table" v-if="route_search !== null">
 		              				<hr>
 			              			<div class="row">
 			              				<div class="col-9">
@@ -97,7 +97,11 @@
 			              			<hr>
 			              			<div class="row">
 			              				<div class="col-12">
-			              					<all-table v-if="route_datatable !== null"  casetable="update" :route="route_datatable" ></all-table>
+			              					<all-table v-if="route_search !== null"  
+			              					casetable="update"  
+			              					:productos="productos" 
+			              					:route="route_init"  
+			              					:routesearch="route_search"></all-table>
 			              				</div>
 			              			</div>
 		              			</div>
@@ -131,8 +135,10 @@
 	    },
 	    data: function() {
 	    	return {
-	    		route_datatable:null,
+	    		route_init:null,
+	    		route_search:null,
 	    		rutas:null,
+	    		productos:'init',
 	    		validationForm:[],
 	    		clientes_search:[],
 	    		ruta_cliente:[],
@@ -176,7 +182,9 @@
 	    methods:{
 	    	selectvehicle(id_select){
 
-	    		this.route_datatable = route('ventas_clientes.stocks_productos',{id:id_select});
+	    		this.route_search = route('ventas_clientes.stocks_productos',{id:id_select});
+	    		this.productos = null;
+
 	    		let vehiculo_selected = this.vehiculos_ruta.find(item => item.id === id_select)
 	    		this.selected_vehiculo = vehiculo_selected.nombre
 
@@ -202,8 +210,13 @@
 	    			me.rutas = response.data.rutas
 	    			me.fpagos = response.data.fpagos
 	    			me.ruta_cliente.push(response.data.data.ruta)
-	    			me.route_datatable = route('ventas_clientes.ventas_lineas',{id:response.data.data.id})
+
+	    			me.route_init = route('ventas_clientes.ventas_lineas',{id:response.data.data.id})
+	    			me.route_search = route('ventas_clientes.stocks_productos',{id:response.data.data.vehiculo_id})
+
 	    			me.form = response.data.data
+
+	    			console.log(response.data.data);
 	    		}).catch((error) => {
 			       	alert(error.response.data.message)
 	    		})

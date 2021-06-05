@@ -15,7 +15,10 @@
 					    </div>
 					   	<select class="form-control text-uppercase"  @input="$emit('fpago', $event.target.value)"   >
 					   		<option value="">Seleccionar..</option>
-					   		<option v-for="item in fpagos" :value="item.cod" class="text-uppercase"> {{item.nombre}}</option>
+					   		<option v-for="item in fpagos" 
+					   		:value="item.cod " 
+					   		:selected="item.cod == form.fpago"
+					   		class="text-uppercase"> {{item.nombre}}</option>
 					   	</select>
 					</div>
 					</div>
@@ -97,7 +100,7 @@
 </template>
 <script>
 	export default {
-		props:['rutas','fpagos','form','routedatatable','createsearch','rutacliente','formsubmit'],
+		props:['rutas','fpagos','form','routeapi','createsearch','rutacliente','formsubmit'],
 
 		data: function() {
 			return {
@@ -147,7 +150,7 @@
 	    		this.ruta_cliente = [];
 
 	    		this.route_datatable = null
-	    		this.$emit('routedatatable',null)
+	    		this.$emit('routeapi',null)
 	    		//DATOS QUE NECESITAREMOS A LA HORA DE GUARDAR 
 	    		this.form.cifnif = item.identificacion
 	    		this.form.nombres = item.nombres

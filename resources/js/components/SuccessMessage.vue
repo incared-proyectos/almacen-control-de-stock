@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="alert alert-success" :style="{display:style}">
-			<p>{{message}}</p>
+			<p class="p-0 m-0">{{message}}</p>
 		</div>
 	</div>
 </template>

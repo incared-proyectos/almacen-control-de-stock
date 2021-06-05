@@ -27,7 +27,7 @@
 		              				:fpagos="fpagos" 
 		              				:rutas="rutas" 
 		              				:form="form"
-		              				:routedatatable="route_datatable"
+		              				:routeapi="route_search"
 		              				:createsearch="clientes_search"
 		              				:rutacliente="ruta_cliente"
 		              				:formsubmit="formstatus"
@@ -42,7 +42,7 @@
     								@vehiculoid="form.vehiculo_id = $event"
     								@rutaid="form.ruta_id = $event"
     								@vehiculosruta="vehiculos_ruta = $event"
-    								@routedatatable="route_datatable = $event"
+    								@routeapi="route_search = $event"
 
 		              				>
 
@@ -75,7 +75,7 @@
 											  		<td>{{item.modelo}}</td>
 											  		<td>{{item.marca}}</td>
 											  		<td>
-											  			<a href="#" class="btn btn-success btn-sm" @click="selectvehicle(item.id)"><i class="fas fa-check-double"></i> Elegir</a>
+											  			<a href="#" class="btn btn-success btn-sm" @click.prevent="selectvehicle(item.id)"><i class="fas fa-check-double"></i> Elegir</a>
 											  		</td>
 											  	</tr>
 											  </tbody>
@@ -83,7 +83,7 @@
 			              				</div>
 			              			</div>	
 		              			</div>
-		              			<div class="productos_table" v-if="route_datatable !== null">
+		              			<div class="productos_table" v-if="route_search !== null">
 		              				<hr>
 			              			<div class="row">
 			              				<div class="col-9">
@@ -98,7 +98,7 @@
 			              			<hr>
 			              			<div class="row">
 			              				<div class="col-12">
-			              					<all-table v-if="route_datatable !== null" casetable="create" :route="route_datatable" ></all-table>
+			              					<all-table v-if="route_search !== null" casetable="create" :routesearch="route_search"  ></all-table>
 			              				</div>
 			              			</div>
 		              			</div>
@@ -132,7 +132,7 @@
 	    },
 	    data: function() {
 	    	return {
-	    		route_datatable:null,
+	    		route_search:null,
 	    		rutas:null,
 	    		validationForm:[],
 	    		clientes_search:[],
@@ -184,7 +184,7 @@
 	    methods:{
 	    	selectvehicle(id_select){
 	    		//AGREGAMOS LA RUTA PARA MOSTRAR LA TABLA ES DECIR LA RUTA DE CONSULTA PARA NUESTRO DATA-TABLE
-	    		this.route_datatable = route('ventas_clientes.stocks_productos',{id:id_select})
+	    		this.route_search = route('ventas_clientes.stocks_productos',{id:id_select})
 	    		//--------------------------------------------------------------------------------------------
 
 	    		let vehiculo_selected = this.vehiculos_ruta.find(item => item.id === id_select)
@@ -204,7 +204,7 @@
 				  }
 				})
 				me.ruta_cliente = []
-				me.route_datatable = null
+				me.route_search = null
         	},
 	    	init(){
 	    		let me = this;

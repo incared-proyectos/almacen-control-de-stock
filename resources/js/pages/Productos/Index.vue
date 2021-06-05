@@ -2,6 +2,16 @@
 	<div>
 		<header-title>Productos</header-title>
 		<section-content>
+			<form-modal 
+			:tipe="tipeform"
+			:urlform="urlform"
+			:tipemessage="tipemessage" 
+			:form="form"
+			:key="componentKey"
+			:showModal="showModal"
+			/>
+				
+			
 		    <!-- Main row -->
 		    <div class="row">
 		    	<div class="col-12">
@@ -10,7 +20,9 @@
 			     	   		<b><i class="fas fa-shopping-basket"></i> Tabla informativa</b>
 			     	   </div>
 		              <div class="card-body">
-
+		              	<button type="button" class="btn btn-primary" @click.prevent="createform">
+						  ADD+
+						</button>
 		                <div class="table-responsive">
 		                      <data-table :columns="columns" class="table"  :urltable="url_table"></data-table>
 		        		</div>
@@ -29,13 +41,27 @@
 	import SectionContent from "@/components/SectionContent.vue"
 	import HeaderTitle from "@/components/HeaderTitle.vue"
 	import DataTable from '@/components/datatables/DataTable.vue';
+	import FormModal from '@/pages/Productos/Form.vue';
 	export default {
 		components: {
-	      SectionContent,HeaderTitle,DataTable
+	      SectionContent,HeaderTitle,DataTable,FormModal
 	    },
 	    data: function() {
 	    	return {
 	    		url_table:route('productos.index'),
+	    		urlform:null,
+	    		tipeform:null,
+	    		tipemessage:null,
+	    		showModal:false,
+	    		componentKey:0,
+	    		form:{
+	    			nombre:'',
+	    			marca:'',
+	    			stock:'',
+	    			precio:'',
+	    			descripcion:'',
+	    		},
+	    		renderComponent: true,
 	    		columns:[
 			        {
 			        	data:'id',
@@ -52,12 +78,56 @@
 			        {
 			        	data:'created_at',
 			        },
-
+			        {
+			        	data:'action',
+			        	orderable: false,
+			          	searchable: false,
+			          	createdCell:this.createdCell,
+			        }
 			    ],
 	    	}
 	    },
-	    mounted(){
+	    methods:{
 
+	       createform(){
+             	this.form = {
+             		nombre:'',
+	    			marca:'',
+	    			stock:'',
+	    			precio:'',
+	    			descripcion:'',
+             	}
+             	this.urlform = route('productos.save')
+             	this.tipeform = 'create'
+             	this.tipemessage = `Crear producto `
+             	this.componentKey += 1
+             	this.showModal = true
+	       },
+		   createdCell(cell, cellData, rowData) {
+	          	let me = this;
+	 
+	          	$(cell).empty();
+	            let actions = Vue.extend(require('@/components/datatables/actions.vue').default);
+	            let instance = new actions({
+	                propsData: {
+	                	id:rowData.id,
+	                	url_delete:route('productos.delete')
+	                },
+	            });
+	            instance.$mount();
+	            instance.$on('edit_emit', function(event) {
+	             	//me.$router.push(`vehiculos/edit/${rowData.id}`);
+	             	me.form = rowData
+	             	me.urlform = route('productos.update')
+	             	me.tipeform = 'update'
+	             	me.tipemessage = `Actualizar producto `
+	             	me.componentKey += 1
+	             	me.showModal=true
+	             	//console.log(rowData);
+
+	            })
+	            $(cell).empty().append(instance.$el);
+	      }
 	    }
 
 	}

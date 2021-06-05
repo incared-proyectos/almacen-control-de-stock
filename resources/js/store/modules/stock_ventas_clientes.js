@@ -53,6 +53,16 @@ const mutations = {
 
 
         }
+        if (payload.operation == 'preciocaltulated') {
+            if (payload.value == '') {
+                items_modify.precio = '' 
+                items_modify.precio_total = 0
+                return;
+            }
+            items_modify.precio = payload.value
+            items_modify.precio_total = items_modify.stock_venta * payload.value
+
+        }
         if (payload.operation == 'precio_calculated') { 
             let priceTot = 0
             let pricestock = 0

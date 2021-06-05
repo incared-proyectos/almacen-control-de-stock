@@ -7,7 +7,7 @@
     display: inline-block;
 }
 /*SEARCHS IN KEY UP VUEJS */
-.search_dni{
+.search_dni,.search_div{
 	position: absolute;
     width: 96%;
     background: #2e70d4d1;

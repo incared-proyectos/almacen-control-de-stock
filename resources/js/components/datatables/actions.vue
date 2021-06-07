@@ -30,16 +30,28 @@
           },
 
           delete_row(event) {
+
             let me = this;
-            axios.post(this.url_delete, {
-              id_data: this.id,
-            }).then((response) => {
-              $(`#codenv${me.id}`).remove();
-            }).catch((error) => {
-              console.error(error);
-            }).finally(() => {
-              // TODO
-            });
+
+            swal.fire({
+              title:'Estas seguro?',
+              text: "Esta accción es irreversible",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Si, eliminar!'
+            }).then((result) => {
+              if (result.isConfirmed) {           
+                axios.post(this.url_delete, {
+                  id_data: this.id,
+                }).then((response) => {
+                  $(`#codenv${me.id}`).remove();
+                }).catch((error) => {
+                  console.error(error);
+                });
+              }
+            })
           }
         },
     }

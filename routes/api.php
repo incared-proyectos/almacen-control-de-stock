@@ -40,6 +40,9 @@ Route::group(['prefix'=>'productos','as'=>'productos.'], function(){
 Route::group(['prefix'=>'rutas','as'=>'rutas.'], function(){
 	Route::get('/', [App\Http\Controllers\RutaController::class, 'index'])->name('index');
 	Route::get('/rutas', [App\Http\Controllers\RutaController::class, 'all'])->name('all');
+	Route::post('/save', [App\Http\Controllers\RutaController::class, 'store'])->name('save');
+	Route::post('/update', [App\Http\Controllers\RutaController::class, 'update'])->name('update');
+	Route::post('/delete', [App\Http\Controllers\RutaController::class, 'destroy'])->name('delete');
 
 });
 

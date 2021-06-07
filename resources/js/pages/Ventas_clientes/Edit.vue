@@ -30,6 +30,7 @@
 		              				:routeapi="route_search"
 		              				:createsearch="clientes_search"
 		              				:rutacliente="ruta_cliente"
+		              				disabledsearch="1"
 		              				
     								@fpago="form.fpago = $event"
     								@codigo="form.codigo = $event"
@@ -85,9 +86,6 @@
 		              			<div class="productos_table" v-if="route_search !== null">
 		              				<hr>
 			              			<div class="row">
-			              				<div class="col-9">
-			              					<h4 class="text-uppercase"><i class="fas fa-store"></i> Productos</h4>
-			              				</div>
 			              				<div class="col-3 " >
 			              					<div class="alert alert-info mb-0 " v-if="selected_vehiculo !== ''">
 			              						<span ><b>Vehiculo seleccionado:</b> {{selected_vehiculo}}</span>
@@ -213,7 +211,7 @@
 
 	    			me.route_init = route('ventas_clientes.ventas_lineas',{id:response.data.data.id})
 	    			me.route_search = route('ventas_clientes.stocks_productos',{id:response.data.data.vehiculo_id})
-
+	    			me.selected_vehiculo = response.data.data.vehiculo.nombre
 	    			me.form = response.data.data
 
 	    			console.log(response.data.data);

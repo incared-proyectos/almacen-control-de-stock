@@ -38,7 +38,7 @@
 		              				</div>
 		              				<div class="col-md-6 col-lg-3 col-xl-3 mt-md-4  mt-xl-0">
 		              					<label for=""><b>Telefono:</b></label>
-		              					<input type="text" class="form-control" v-model="form.telefono" placeholder="example: Azul">
+		              					<input type="text" class="form-control" v-model="form.telefono" placeholder="example: 564798787">
 		              				</div>
 		              			
 		              			</div>
@@ -46,7 +46,7 @@
 		              			<div class="row">
 		              				<div class="col-md-6 col-lg-3 col-xl-3 mt-md-4  mt-xl-0">
 		              					<label for=""><b>Email:</b></label>
-		              					<input type="text" class="form-control" v-model="form.email" placeholder="example: Azul">
+		              					<input type="text" class="form-control" v-model="form.email" placeholder="example: example@gmail.com">
 		              				</div>
 		              				<div class="col-md-6 col-lg-3 col-xl-3 mt-md-4  mt-xl-0">
 		              					<label for=""><b>direccion:</b></label>

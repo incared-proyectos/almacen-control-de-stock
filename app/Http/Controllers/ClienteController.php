@@ -137,6 +137,11 @@ class ClienteController extends Controller
      */
     public function destroy(Request $request)
     {
-        print_r($request->all());
+        $all = $request->all();
+        $table = Cliente::find($all['id_data']);
+        if ($table) {
+            $table->delete();
+        }
+
     }
 }

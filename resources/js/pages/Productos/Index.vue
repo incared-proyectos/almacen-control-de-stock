@@ -20,8 +20,9 @@
 			     	   		<b><i class="fas fa-shopping-basket"></i> Tabla informativa</b>
 			     	   </div>
 		              <div class="card-body">
-		              	<button type="button" class="btn btn-primary" @click.prevent="createform">
-						  ADD+
+		              	<button type="button" class="btn btn-primary mb-1" @click.prevent="createform">
+						  <i class="fas fa-plus-square"></i>
+						  ADD
 						</button>
 		                <div class="table-responsive">
 		                      <data-table :columns="columns" class="table"  :urltable="url_table"></data-table>
@@ -61,7 +62,6 @@
 	    			precio:'',
 	    			descripcion:'',
 	    		},
-	    		renderComponent: true,
 	    		columns:[
 			        {
 			        	data:'id',

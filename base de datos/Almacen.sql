@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-06-2021 a las 03:40:22
+-- Tiempo de generación: 08-06-2021 a las 01:50:13
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 7.4.13
 
@@ -185,7 +185,8 @@ CREATE TABLE `productos` (
 
 INSERT INTO `productos` (`id`, `nombre`, `stock`, `precio`, `precio_rebaja`, `marca`, `descripcion`, `created_at`, `updated_at`) VALUES
 (1, 'Galletas de  chocolate2', 70, 100, NULL, 'Royale club', 'asdasdasd', '2021-05-24 14:43:35', '2021-06-04 20:05:55'),
-(2, 'Galletas 3', 999, 10000, NULL, '', '', '2021-06-04 18:32:34', '2021-06-04 18:32:34');
+(2, 'Galletas', 999, 10000, NULL, 'Gap', '', '2021-06-04 18:32:34', '2021-06-07 15:43:03'),
+(5, 'Pruebas productos', 2000, 1000, NULL, 'pruebas', 'asdasdasd', '2021-06-07 15:03:17', '2021-06-07 15:03:17');
 
 -- --------------------------------------------------------
 
@@ -206,8 +207,9 @@ CREATE TABLE `rutas` (
 --
 
 INSERT INTO `rutas` (`id`, `nombre`, `direccion`, `created_at`, `updated_at`) VALUES
-(1, 'Ruta 1', 'Direccion central al cruce, calle 4, casa numero 80', '2021-05-24 14:44:35', '2021-05-24 14:44:35'),
-(2, 'Ruta 1', 'Direccion central, calle 7, casa numero 100', '2021-05-24 14:44:35', '2021-05-24 14:44:35');
+(1, 'Ruta 2', 'Direccion central al cruce, calle 4, casa numero 80', '2021-05-24 14:44:35', '2021-06-07 14:59:30'),
+(2, 'Ruta 1', 'Direccion central, calle 7, casa numero 100', '2021-05-24 14:44:35', '2021-05-24 14:44:35'),
+(3, 'Ruta 4', 'asdasdasdasdasd', '2021-06-07 14:59:44', '2021-06-07 14:59:44');
 
 -- --------------------------------------------------------
 
@@ -344,7 +346,7 @@ CREATE TABLE `venta_clientes` (
 --
 
 INSERT INTO `venta_clientes` (`id`, `codigo`, `cifnif`, `direccion`, `nombres`, `apellidos`, `telefono`, `ciudad`, `fpago`, `ruta_id`, `vehiculo_id`, `total_precio`, `fecha_venta`, `created_at`, `updated_at`) VALUES
-(8, '00000001', '4546545646', 'Ruta 1', 'Arnoldo', 'Perez', '56564656', NULL, 'cond', 1, 4, 1100, '2021-06-01', '2021-06-01 20:25:03', '2021-06-03 00:54:38'),
+(8, '00000001', '4546545646', 'Ruta 1', 'Arnoldo', 'Perez2', '56564656', NULL, 'cond', 1, 4, 1100, '2021-06-01', '2021-06-01 20:25:03', '2021-06-06 17:17:52'),
 (9, '00000002', '251293013', 'Ruta 1', 'pedro45', 'pedro4', '04127709844', NULL, 'cond', 2, 3, 600, '2021-06-01', '2021-06-01 20:30:50', '2021-06-01 20:30:50'),
 (11, '00000003', '4546545646', 'Ruta 1', 'Arnoldo', 'Perez', '56564656', NULL, 'cond', 1, 4, 600, '2021-06-04', '2021-06-04 14:03:28', '2021-06-04 14:32:41');
 
@@ -491,7 +493,7 @@ ALTER TABLE `almacens`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `failed_jobs`
@@ -521,13 +523,13 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `rutas`
 --
 ALTER TABLE `rutas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `stock_historias`

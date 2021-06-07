@@ -8,5 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Ruta extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'id',
+        'nombre',
+        'direccion',
+    ];
 
 }

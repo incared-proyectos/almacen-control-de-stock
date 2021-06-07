@@ -31,6 +31,7 @@
 		              				:createsearch="clientes_search"
 		              				:rutacliente="ruta_cliente"
 		              				:formsubmit="formstatus"
+		              				disabledsearch="0"
 
     								@fpago="form.fpago = $event"
     								@codigo="form.codigo = $event"

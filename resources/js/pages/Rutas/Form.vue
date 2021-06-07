@@ -10,34 +10,18 @@
 
 	       	<form action="" @submit.prevent="formsave">
 	       		<div class="row">
-		       		<div class="col-6 "> 
+		       		<div class="col-12"> 
 		       			<label for="">Nombre:</label>
 		       			<input type="text" class="form-control" v-model="form.nombre">
 		       		</div>
-		       		<div class="col-6">
-		       			<label for="">Marca:</label>
-		       			<input type="text" class="form-control" v-model="form.marca">
-		       		</div>
+		       	
 		  
 	       		</div>
 	       		<hr>
 	       		<div class="row">
-	       			<div  class="col-6"> 
-		       			<label for="">Stock:</label>
-		       			<input type="number" class="form-control" v-model="form.stock">
-		       		</div>
-		       		<div  class="col-6"> 
-		       			<label for="">Precio:</label>
-		       			<input type="number" class="form-control" v-model="form.precio">
-		       		</div>
-	       		</div>
-	       		<hr>
-	       		<div class="row">
-		       		<div class="col-12">
-		       			<Label>Descripcion:</Label>
-		       			<textarea v-model="form.descripcion"  cols="30" rows="5" class="form-control">
-		       				
-		       			</textarea>
+	       			<div class="col-12">
+		       			<label for="">Ruta:</label>
+		       			<input type="text" class="form-control" v-model="form.direccion">
 		       		</div>
 	       		</div>
 	       		<hr>

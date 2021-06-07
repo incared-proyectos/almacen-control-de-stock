@@ -2,7 +2,7 @@
 	<div>
 		<div class="row">
 			<div class="col-6">
-				
+				<h4 class="text-uppercase"><i class="fas fa-shopping-cart"></i> DATOS CLIENTE</h4>
 			</div>
 			<div class="col-6 text-right">
 				<input type="hidden" :value="form.ruta_id"  @input="$emit('rutaid', $event.target.value)" >
@@ -10,41 +10,35 @@
 				<div class="row">
 					<div class="col-4">
 						<div class="input-group mb-3">
-					    <div class="input-group-prepend">
-					      <span class="input-group-text text-uppercase"><b>F.Pagos</b></span>
-					    </div>
-					   	<select class="form-control text-uppercase"  @input="$emit('fpago', $event.target.value)"   >
-					   		<option value="">Seleccionar..</option>
-					   		<option v-for="item in fpagos" 
-					   		:value="item.cod " 
-					   		:selected="item.cod == form.fpago"
-					   		class="text-uppercase"> {{item.nombre}}</option>
-					   	</select>
-					</div>
-					</div>
-					<div class="col-4">
-						<div class="input-group mb-3">
-					    <div class="input-group-prepend">
-					      <span class="input-group-text text-uppercase"><b>Codigo</b></span>
-					    </div>
-					    <input type="text" class="form-control" placeholder="example:006798797" :value="form.codigo" @input="$emit('codigo', $event.target.value)" readonly="" >
-					</div>
+						    <div class="input-group-prepend">
+						      <span class="input-group-text text-uppercase"><b>F.Pagos</b></span>
+						    </div>
+						   	<select class="form-control text-uppercase"  @input="$emit('fpago', $event.target.value)"   >
+						   		<option value="">Seleccionar..</option>
+						   		<option v-for="item in fpagos" 
+						   		:value="item.cod " 
+						   		:selected="item.cod == form.fpago"
+						   		class="text-uppercase"> {{item.nombre}}</option>
+						   	</select>
+						</div>
 					</div>
 					<div class="col-4">
 						<div class="input-group mb-3">
-					    <div class="input-group-prepend">
-					      <span class="input-group-text text-uppercase"><b>Fecha</b></span>
-					    </div>
-					    <input type="text" class="form-control" id="datepicker" placeholder="example:10/20/2020" :value="form.fecha_venta" @input="$emit('createdat', $event.target.value)" >
+						    <div class="input-group-prepend">
+						      <span class="input-group-text text-uppercase"><b>Codigo</b></span>
+						    </div>
+						    <input type="text" class="form-control" placeholder="example:006798797" :value="form.codigo" @input="$emit('codigo', $event.target.value)" readonly="" >
+						</div>
 					</div>
+					<div class="col-4">
+						<div class="input-group mb-3">
+						    <div class="input-group-prepend">
+						      <span class="input-group-text text-uppercase"><b>Fecha</b></span>
+						    </div>
+						    <input type="text" class="form-control" id="datepicker" placeholder="example:10/20/2020" :value="form.fecha_venta" @input="$emit('createdat', $event.target.value)" >
+						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-		<hr>
-		<div class="row">
-			<div class="col-12">
-				<h4 class="text-uppercase"><i class="fas fa-shopping-cart"></i> DATOS CLIENTE</h4>
 			</div>
 		</div>
 		<hr>
@@ -54,7 +48,17 @@
 			    <div class="input-group-prepend">
 			      <span class="input-group-text"><b>DNI</b></span>
 			    </div>
-			    <input type="text" class="form-control" placeholder="BUSCAR DNI" @keyup="dni_search"  :value="form.cifnif" @input="$emit('cifnif', $event.target.value)" >
+
+			  
+			    <template v-if="disableform == false">
+			    	<input type="text" class="form-control" placeholder="BUSCAR DNI" @keyup="dni_search"  :value="form.cifnif" @input="$emit('cifnif', $event.target.value)"  >
+			    </template>
+			    <template v-else>
+			    	<input type="text" class="form-control" placeholder="BUSCAR DNI" :value="form.cifnif" @input="$emit('cifnif', $event.target.value)" :readonly="disableform" >
+			    </template>
+
+		
+
 			  
 			</div>
 			
@@ -100,7 +104,7 @@
 </template>
 <script>
 	export default {
-		props:['rutas','fpagos','form','routeapi','createsearch','rutacliente','formsubmit'],
+		props:['rutas','fpagos','form','routeapi','createsearch','rutacliente','formsubmit','disabledsearch'],
 
 		data: function() {
 			return {
@@ -128,6 +132,10 @@
 					return [];
 				}
 				return this.rutacliente.length > 0 ? this.rutacliente : this.ruta_cliente
+			},
+			disableform(){
+
+				return this.disabledsearch == 1 ? true : false;
 			}
 		},
 		methods:{

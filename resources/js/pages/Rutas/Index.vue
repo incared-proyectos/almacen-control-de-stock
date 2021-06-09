@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<header-title>Rutas</header-title>
 		<section-content>
 			<form-modal 
 			:tipe="tipeform"
@@ -15,7 +14,7 @@
 		    	<div class="col-12">
 			     	<div class="card">
 			     	   <div class="card-header bg bg-info">
-			     	   		<b><i class="fas fa-route"></i> Tabla informativa</b>
+			     	   		<b><i class="fas fa-route"></i> Rutas</b>
 			     	   </div>
 		              <div class="card-body">
 		              	<button type="button" class="btn btn-primary mb-1" @click.prevent="createform">

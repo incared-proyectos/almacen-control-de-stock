@@ -93,6 +93,25 @@
             </p>
           </router-link>
         </li>
+        <li class="nav-item ">
+          <a href="#" class="nav-link ">
+            <i class="nav-icon fas fa-briefcase"></i>
+            <p>
+              Reportes
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <router-link  to="/reportes/vehiculos"  class="nav-link">
+                <i class="nav-icon fas fa-shopping-cart"></i>
+                <p>
+                  Reportes vehiculos
+                </p>
+              </router-link>
+            </li>
+          </ul>
+        </li>
       </ul>
     </nav>
     <!-- /.sidebar-menu -->

@@ -1,13 +1,12 @@
 <template>
 	<div>
-		<header-title>Almacen</header-title>
 		<section-content>
 		    <!-- Main row -->
 		    <div class="row">
 		    	<div class="col-12">
 			     	<div class="card">
 			     	   <div class="card-header bg bg-info">
-			     	   		<b><i class="fas fa-store"></i> Tabla informativa</b>
+			     	   		<b><i class="fas fa-store"></i> Almacen</b>
 			     	   </div>
 		              <div class="card-body">
 			              	<div class="table-responsive">

@@ -1,13 +1,12 @@
 <template>
 	<div>
-		<header-title>Clientes</header-title>
 		<section-content>
 		    <!-- Main row -->
 		    <div class="row">
 		    	<div class="col-12">
 			     	<div class="card">
 			     	   <div class="card-header bg bg-info">
-			     	   		<b><i class="fas fa-user-tie"></i> Tabla informativa</b>
+			     	   		<b><i class="fas fa-user-tie"></i> Clientes</b>
 			     	   </div>
 		              <div class="card-body">
 	              		<div class="row mb-2">

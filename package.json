@@ -25,12 +25,14 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "@mathieustan/vue-datepicker": "^0.2.11",
         "admin-lte": "^3.1.0",
         "moment": "^2.29.1",
         "shortid": "^2.2.16",
         "sweetalert2": "^11.0.16",
         "vue-loading-overlay": "^3.4.2",
         "vue-router": "^3.5.1",
+        "vue2-datepicker": "^3.9.1",
         "vuex": "^3.6.2"
     }
 }

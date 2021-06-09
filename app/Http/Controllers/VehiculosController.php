@@ -70,6 +70,19 @@ class VehiculosController extends Controller
         );
     }
 
+    public function list_report(Request $request){
+        if (!empty($request->get('searchfecha') )) {
+            $stock = Stock_historia::whereDate('created_at', $request->get('searchfecha'))->get();
+        }else{
+            $stock = Stock_historia::all();
+        }
+        $table = Datatables::of($stock);
+        $table->addColumn('action', function($row){
+            return '';
+        })->rawColumns(['action']);
+        return $table->make(true);  
+    }
+
     /**
      * Store a newly created resource in storage.
      *

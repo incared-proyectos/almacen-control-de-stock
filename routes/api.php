@@ -86,5 +86,15 @@ Route::group(['prefix'=>'ventas_clientes','as'=>'ventas_clientes.'], function(){
 	Route::post('/delete', [App\Http\Controllers\Venta_ClientesController::class, 'destroy'])->name('delete');
 });
 
+//MODULE REPORTES
+
+Route::group(['prefix'=>'reportes','as'=>'reportes.'], function(){
+	Route::get('/vehiculos', [App\Http\Controllers\VehiculosController::class, 'list_report'])->name('vehiculos');
+
+});
+
+
+
+
 
 

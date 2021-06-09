@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<header-title>Productos</header-title>
 		<section-content>
 			<form-modal 
 			:tipe="tipeform"
@@ -17,7 +16,7 @@
 		    	<div class="col-12">
 			     	<div class="card">
 			     	   <div class="card-header bg bg-info">
-			     	   		<b><i class="fas fa-shopping-basket"></i> Tabla informativa</b>
+			     	   		<b><i class="fas fa-shopping-basket"></i> Productos</b>
 			     	   </div>
 		              <div class="card-body">
 		              	<button type="button" class="btn btn-primary mb-1" @click.prevent="createform">

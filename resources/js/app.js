@@ -8,6 +8,8 @@ import 'datatables.net-bs4/js/dataTables.bootstrap4.min.js';
 import VueRouter from 'vue-router'
 import router from './router';
 import Vuex from 'vuex'
+import VueDatePicker from '@mathieustan/vue-datepicker';
+import '@mathieustan/vue-datepicker/dist/vue-datepicker.min.css';
 
 
 import store from './store'
@@ -18,6 +20,8 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 Vue.use(Loading);
 Vue.use(VueRouter)
 Vue.use(Vuex)
+Vue.use(VueDatePicker);
+
 const app = new Vue({
     el: '#app',
     router,

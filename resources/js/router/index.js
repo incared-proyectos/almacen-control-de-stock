@@ -53,6 +53,7 @@ let routes = [
               path: 'edit/:id',
               component: require('@/pages/Vehiculos/Edit.vue').default
             },
+ 
         ]
     },
     {
@@ -110,6 +111,23 @@ let routes = [
             
 
             
+        ]
+    },
+    {
+        path: '/reportes',
+        component: require('@/pages/App.vue').default,
+        meta: {
+            requiresAuth: true,
+        },
+        children: [
+            {
+
+              path: 'vehiculos',
+              component: require('@/pages/Reportes/Vehiculos.vue').default
+
+            },
+            
+ 
         ]
     },
      

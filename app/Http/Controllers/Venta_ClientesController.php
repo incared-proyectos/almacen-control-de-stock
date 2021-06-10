@@ -12,6 +12,7 @@ use App\Models\Vehiculo;
 use App\Models\Stock_vehiculo;
 use App\Models\Ruta;
 use App\Models\Forma_de_pago;
+use Mpdf;
 class Venta_ClientesController extends Controller
 {
     /**
@@ -23,6 +24,8 @@ class Venta_ClientesController extends Controller
     {
         $table = Datatables::of(Venta_cliente::all());
         $table->addColumn('action', function($row){
+            return '';
+        })->addColumn('actionpdf', function($row){
             return '';
         })->rawColumns(['action']);
         return $table->make(true);      
@@ -91,6 +94,33 @@ class Venta_ClientesController extends Controller
             }
         }
         return $codigo;
+    }
+
+    public function pdf_init($id){
+        $factura = Venta_cliente::find($id);
+        $factura_lineas = Venta_clientes_linea::where('venta_cliente_id',$factura->id)->get();
+
+        $mpdf = new \Mpdf\Mpdf([
+            'margin_left' => 6,
+            'margin_right' => 6,
+            'margin_top' => 35,
+            'margin_bottom' => 10,
+            'margin_header' => 5,
+            'margin_footer' => 5,
+            'mode' => 'utf-8', 
+            'format' => 'A4',
+            'orientation' => 'P'
+        ]);
+        $mpdf->SetProtection(array('print'));
+        $mpdf->SetTitle("Factura PDF Ventas lineas");
+        $mpdf->SetAuthor("Acme Trading Co.");
+        $mpdf->SetWatermarkText("");   // anulada
+        $mpdf->showWatermarkText = true;
+        $mpdf->watermark_font = 'DejaVuSansCondensed';
+        $mpdf->watermarkTextAlpha = 0.1;
+        $mpdf->SetDisplayMode('fullpage');
+        $mpdf->WriteHTML(view('export_pdf.factura',['factura'=>$factura,'lineas'=>$factura_lineas]));
+        $mpdf->Output('factura_'.$factura->id.'.pdf', 'I');
     }
     /**
      * Store a newly created resource in storage.

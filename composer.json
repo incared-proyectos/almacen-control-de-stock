@@ -13,6 +13,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
+        "mpdf/mpdf": "^8.0",
         "tightenco/ziggy": "^1.1",
         "yajra/laravel-datatables-oracle": "~9.0"
     },

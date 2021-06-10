@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/pruebas', [App\Http\Controllers\PruebasController::class, 'index'])->name('home');
+Route::get('/pdf_init/{id}', [App\Http\Controllers\Venta_ClientesController::class, 'pdf_init']);
 
 
 Route::get('/{any?}',[App\Http\Controllers\PageController::class, 'index'])->where('any', '.*')->middleware('auth:sanctum');

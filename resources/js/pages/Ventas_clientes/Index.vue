@@ -68,13 +68,19 @@
 			        	orderable: false,
 			          	searchable: false,
 			          	createdCell:this.createdCell,
+			        },
+			        {
+			        	data:'actionpdf',
+			        	orderable: false,
+			          	searchable: false,
+			          	createdCell:this.createdCellPDF,
 			        }
 
 			    ],
 	    	}
 	    },
 	     methods:{
-		   createdCell(cell, cellData, rowData) {
+		    createdCell(cell, cellData, rowData) {
 	          	let me = this;
 	 
 	          	$(cell).empty();
@@ -90,8 +96,23 @@
 	             	me.$router.push(`ventas_clientes/edit/${rowData.id}`);
 	            })
 	            $(cell).empty().append(instance.$el);
-	          
-	      }
+	      	},
+	      	createdCellPDF(cell, cellData, rowData) {
+	          	let me = this;
+	 
+	          	$(cell).empty();
+	            let actions = Vue.extend(require('@/components/datatables/actionPDF.vue').default);
+	            let instance = new actions({
+	                propsData: {
+	                	id:rowData.id,
+	                },
+	            });
+	            instance.$mount();
+	            instance.$on('initpdf', function(event) {
+	             	window.location.href = route('ventas_clientes.pdfinit',{id:rowData.id});
+	            })
+	            $(cell).empty().append(instance.$el);
+	      	}
 	    },
 	    mounted(){
 	    }

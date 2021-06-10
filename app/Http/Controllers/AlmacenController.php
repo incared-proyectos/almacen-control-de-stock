@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Yajra\Datatables\Datatables;
 use App\Models\Almacen;
 
+
 class AlmacenController extends Controller
 {
     /**

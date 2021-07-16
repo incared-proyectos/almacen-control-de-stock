@@ -14,10 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//MODULE PERFIL USUARIO
+Route::group(['prefix'=>'perfil','as'=>'perfil.'], function(){
+	Route::get('/', [App\Http\Controllers\PerfilController::class, 'index'])->name('index')->middleware('auth:sanctum');
+	Route::post('/save', [App\Http\Controllers\PerfilController::class, 'store'])->name('save')->middleware('auth:sanctum');
+});
 
 //MODULE ALMACEN
 Route::group(['prefix'=>'almacen','as'=>'almacen.'], function(){

@@ -22,6 +22,15 @@ Vue.use(VueRouter)
 Vue.use(Vuex)
 Vue.use(VueDatePicker);
 
+Vue.component(
+    'info-profile',
+    require('@/pages/Perfil/Info.vue').default
+);
+Vue.component(
+    'modal-profile',
+    require('@/pages/Perfil/Index.vue').default
+);
+
 const app = new Vue({
     el: '#app',
     router,

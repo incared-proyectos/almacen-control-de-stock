@@ -77,7 +77,7 @@ export default {
     	},
     	userimg(){
     		let user = this.$store.getters.getUser;
-    		return user.img_src !== null ? `${this.asset}/storage/profile/${user.id}/${user.img_src}` :  `${this.asset}/img/avatar5.png`
+    		return user.img_src !== null ? `${this.asset}storage/profile/${user.id}/${user.img_src}` :  `${this.asset}img/avatar5.png`
     	}
     },
     methods: {

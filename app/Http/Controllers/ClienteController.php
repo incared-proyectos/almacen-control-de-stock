@@ -72,7 +72,7 @@ class ClienteController extends Controller
                 return response()->json(['error'=>array('La identificacion '.$all['identificacion'].' ya existe')],422);
             }
             $table->fill($all)->save();
-            return response()->json(['success'=>'Vehiculo guardado con exito']);
+            return response()->json(['success'=>'Cliente guardado con exito']);
         }
     }
 
@@ -125,7 +125,7 @@ class ClienteController extends Controller
                 return response()->json(['error'=>array('La identificacion '.$all['identificacion'].' ya existe')],422);
             }
             $table->fill($all)->save();
-            return response()->json(['success'=>'Vehiculo guardado con exito']);
+            return response()->json(['success'=>'Cliente actualizado con exito']);
         }
     }
 

@@ -27,11 +27,16 @@
 				let valueThis = Number($(event.currentTarget).val());
 				let idTable = $(event.currentTarget).attr('data-id');
 
-				let stock_actual = Number($(`#stockActual${idTable}`).val());
+				let stock_actual = Number($(`#stockActualHidden${idTable}`).val());
+
 				if (valueThis == 0 ) {
 					$(`#stockActual${idTable}`).val($(`#stockActualHidden${idTable}`).val());
 				}else{
-					$(`#stockActual${idTable}`).val(stock_actual+valueThis);
+					
+					let stockcalculated = (stock_actual > 0) ? stock_actual+valueThis : valueThis;
+					
+					$(`#stockActual${idTable}`).val(stockcalculated);
+
 				}
 			}
 		

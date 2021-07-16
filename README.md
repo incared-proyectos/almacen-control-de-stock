@@ -31,7 +31,7 @@
 
 <em>Clonamos el repositorio</em>
 <pre>
-	<b>git clone https://github.com/elyugos/sistema-de-regristro-de-visitas.git</b>
+	<b>git clone https://github.com/incared-proyectos/almacen.git</b>
 </pre>
 <em>Instalamos nuestras dependencias con</em>
 <pre>

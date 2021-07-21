@@ -2,6 +2,11 @@
 
 @section('content')
 <div class="container">
+    <div class="row mb-1">
+        <div class="col-12 text-center">
+            <img src="{{ asset('img/logo_incared.png')}}" alt="" style="width: 300px;">
+        </div>
+    </div>
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">

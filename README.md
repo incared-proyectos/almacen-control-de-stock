@@ -39,6 +39,9 @@
 <pre><code><b>php artisan key:generate</b></code></pre>
 <em>Instalamos nuestros paquetes necesarios </em>
 <pre><code><b>npm install</b></code></pre>
+<em> Actualizamos/instalamos VUE </em>
+<pre><code><b>npm update vue-loader</b><br>npm i vue-loader
+</code></pre>
 <em> Compilamos </em>
 <pre><code><b>npm run dev</b></code></pre>
 <h3>Una vez terminemos con los pasos anteriores, procedemos a configurar nuestro archivo .env</h3>

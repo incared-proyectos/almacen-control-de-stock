@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 17-07-2021 a las 17:14:24
--- Versión del servidor: 10.4.17-MariaDB
--- Versión de PHP: 7.4.13
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 02-07-2022 a las 04:22:06
+-- Versión del servidor: 10.4.21-MariaDB
+-- Versión de PHP: 7.4.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `vuejs2`
+-- Base de datos: `almacen-control-de-stock`
 --
 
 -- --------------------------------------------------------
@@ -319,7 +319,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `img_src`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin@almacen.com', NULL, '$2y$10$bFm5znijdBDhZsbv4oDXJ.js8lbakkA2ObZrXyDnnCqxqke54WNxC', NULL, '3k1KCleNly6mrJUh3tGMp8sh065NVRVUwm4zTepF.jpg', '2021-05-23 03:36:27', '2021-07-17 19:14:01');
+(1, 'admin', 'admin@almacen.com', NULL, '$2y$10$bFm5znijdBDhZsbv4oDXJ.js8lbakkA2ObZrXyDnnCqxqke54WNxC', NULL, '3k1KCleNly6mrJUh3tGMp8sh065NVRVUwm4zTepF.jpg', '2021-05-23 03:36:27', '2021-07-17 19:14:01'),
+(4, 'sss', 'elvisvc85@gmail.com', NULL, '$2y$10$TsogWGBgwoOkkxzBiLkJq.8RsIGVxSoE.YTJdcNScB.MxtXmtJJX.', NULL, NULL, '2022-07-02 07:20:50', '2022-07-02 07:20:50');
 
 -- --------------------------------------------------------
 
@@ -347,7 +348,8 @@ INSERT INTO `vehiculos` (`id`, `nombre`, `modelo`, `marca`, `color`, `rutas_json
 (3, 'vehiculo 2', 'chevrolet3', 'blazer', 'azul', '[{\"id\":1,\"nombre\":\"Ruta 1\",\"direccion\":\"Direccion central al cruce, calle 4, casa numero 80\",\"created_at\":\"2021-05-24T14:44:35.000000Z\",\"updated_at\":\"2021-05-24T14:44:35.000000Z\"},{\"id\":2,\"nombre\":\"Ruta 1\",\"direccion\":\"Direccion central, calle 7, casa numero 100\",\"created_at\":\"2021-05-24T14:44:35.000000Z\",\"updated_at\":\"2021-05-24T14:44:35.000000Z\"}]', '2021-05-25 18:25:43', '2021-05-31 03:45:50'),
 (4, 'Vehiculo9', 'chevrolet', 'adads', 'asdasd', '[{\"id\":1,\"nombre\":\"Ruta 1\",\"direccion\":\"Direccion central al cruce, calle 4, casa numero 80\",\"created_at\":\"2021-05-24T14:44:35.000000Z\",\"updated_at\":\"2021-05-24T14:44:35.000000Z\"}]', '2021-05-26 16:18:33', '2021-06-08 01:23:03'),
 (7, 'Vehiculo10', 'chevrolet', 'blazer', 'rojo', '[{\"id\":1,\"nombre\":\"Ruta 2\",\"direccion\":\"Direccion central al cruce, calle 4, casa numero 80\",\"created_at\":\"2021-05-24T14:44:35.000000Z\",\"updated_at\":\"2021-06-07T14:59:30.000000Z\"},{\"id\":2,\"nombre\":\"Ruta 1\",\"direccion\":\"Direccion central, calle 7, casa numero 100\",\"created_at\":\"2021-05-24T14:44:35.000000Z\",\"updated_at\":\"2021-05-24T14:44:35.000000Z\"}]', '2021-07-16 14:32:45', '2021-07-16 14:32:45'),
-(14, 'Vehiculo para video', 'chevrolet', 'blazer', 'amarillo', '[{\"id\":18,\"nombre\":\"Ruta para video\",\"direccion\":\"New york calle 2\",\"created_at\":\"2021-07-16T18:17:06.000000Z\",\"updated_at\":\"2021-07-16T18:17:19.000000Z\"},{\"id\":2,\"nombre\":\"Ruta 1\",\"direccion\":\"Direccion central, calle 7, casa numero 100\",\"created_at\":\"2021-05-24T14:44:35.000000Z\",\"updated_at\":\"2021-05-24T14:44:35.000000Z\"}]', '2021-07-16 18:18:31', '2021-07-16 18:19:18');
+(14, 'Vehiculo para video', 'chevrolet', 'blazer', 'amarillo', '[{\"id\":18,\"nombre\":\"Ruta para video\",\"direccion\":\"New york calle 2\",\"created_at\":\"2021-07-16T18:17:06.000000Z\",\"updated_at\":\"2021-07-16T18:17:19.000000Z\"},{\"id\":2,\"nombre\":\"Ruta 1\",\"direccion\":\"Direccion central, calle 7, casa numero 100\",\"created_at\":\"2021-05-24T14:44:35.000000Z\",\"updated_at\":\"2021-05-24T14:44:35.000000Z\"}]', '2021-07-16 18:18:31', '2021-07-16 18:19:18'),
+(15, 'ff', 'ff', 'ff', 'fff', '[{\"id\":3,\"nombre\":\"Ruta 4\",\"direccion\":\"asdasdasdasdasd\",\"created_at\":\"2021-06-07T14:59:44.000000Z\",\"updated_at\":\"2021-06-07T14:59:44.000000Z\"}]', '2022-07-02 02:21:47', '2022-07-02 02:21:47');
 
 -- --------------------------------------------------------
 
@@ -582,13 +584,13 @@ ALTER TABLE `stock_vehiculos`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `vehiculos`
 --
 ALTER TABLE `vehiculos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `venta_clientes`

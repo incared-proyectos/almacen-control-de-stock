@@ -40,7 +40,8 @@
 <em>Instalamos nuestros paquetes necesarios </em>
 <pre><code><b>npm install</b></code></pre>
 <em> Actualizamos/instalamos VUE </em>
-<pre><code><b>npm update vue-loader</b><br>npm i vue-loader
+<pre><code><b>npm update vue-loader</b></code>
+<code>npm i vue-loader
 </code></pre>
 <em> Compilamos </em>
 <pre><code><b>npm run dev</b></code></pre>
